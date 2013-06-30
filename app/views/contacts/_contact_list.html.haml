@@ -1,0 +1,11 @@
+%table#contacts.table
+  %thead
+    %tr
+      %th Nombre
+      %th Email
+  %tbody
+    - if @contacts
+      - @contacts.each do |contact|
+        %tr
+          %td= contact.name 
+          %td= contact.email

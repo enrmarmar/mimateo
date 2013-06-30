@@ -1,0 +1,17 @@
+%table#tasks_table.table
+  %thead
+    %tr
+      %th Nombre
+      %th Descripción
+      %th Plazo
+      %th Estado
+  %tbody
+    - if @tasks
+      - @tasks.each do |task|
+        %tr
+          %td= link_to task.name, task_path(task) 
+          %td= task.description
+          %td= task.deadline
+          %td
+            - if task.completed
+              %i.icon-ok

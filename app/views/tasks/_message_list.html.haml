@@ -1,0 +1,24 @@
+= form_tag messages_path, :method => :post do
+  .row
+    .span11
+      = text_field :message, :text, :required => true, placeholder: 'Escribe aquí tu mensaje', class: 'span12'
+      = hidden_field :message, :task_id, :value => @task.id
+    .span1
+      = submit_tag 'Enviar'
+
+#message_list
+  - if @task.messages
+    - @task.messages.reverse_order.each do |message|
+      = message.user.name + ': (' + message.created_at.to_date.to_s + ')'
+      .row
+        .span11.well
+          = message.text
+        .span1
+          - if @current_user.owns_task? @task
+            = link_to message_path(message.id), :method => :delete, :confirm => '¿Estás seguro?' do
+              %button#delete-message.btn.btn-mini.pull-right(data-toggle="tooltip-delete-message" title="Eliminar mensaje")
+                %i.icon-trash
+        
+      %br
+      
+      

@@ -1,0 +1,8 @@
+#global_bone_counter(data-toggle="tooltip-bone-counter" title="Has dado #{@bones_given} hueso/s y has recibido #{@bones_taken}")
+  %i.icon-chevron-up
+  %span#bones_given
+    = @bones_given
+  %img(src='/assets/bone-small.png')
+  %span#bones_given
+    = @bones_taken
+  %i.icon-chevron-down

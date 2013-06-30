@@ -1,0 +1,9 @@
+%h2 Editar contacto #{@contact.name}
+
+= form_tag contact_path(@contact), :method => :put do
+
+	= render :partial => 'contact_form'
+
+	= submit_tag 'Guardar cambios'
+
+= link_to 'Volver', tasks_path

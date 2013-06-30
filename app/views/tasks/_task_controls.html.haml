@@ -1,0 +1,35 @@
+.row
+	.span3.offset1
+		- unless @current_user.owns_task? @task
+			Tarea de #{@task.user.name}
+
+	.span3.offset1
+		- if @task.completed
+			%p#task_status
+				Tarea completada 
+				/
+					- if @current_user.owns_task? @task 
+						= link_to :controller => :tasks, :action => :uncomplete, :id => @task do
+							%button#uncomplete-task.btn.btn-mini.btn-danger(data-toggle="tooltip-complete-task" title="Marcar tarea como pendiente")
+								%i.icon-remove
+		- else
+			%p#task_status
+				Pendiente hasta:
+				= @task.deadline ? @task.deadline : 'indefinido'
+				- if @current_user.owns_task? @task
+					%button#complete-task.btn.btn-mini(data-toggle="tooltip-complete-task" title="Marcar tarea como completada")
+						%i.icon-ok
+
+	.span1.offset3
+		- if @current_user.owns_task? @task
+			= link_to task_path(@task), :method => :delete, :confirm => '¿Estás seguro?' do
+				%button#delete-task.btn.btn-mini(data-toggle="tooltip-delete-task" title="Eliminar tarea")
+					%i.icon-trash
+
+			= link_to edit_task_path @task do
+				%button#edit-task.btn.btn-mini(data-toggle="tooltip-edit-task" title="Editar tarea")
+					%i.icon-pencil
+		- else
+			= link_to :controller => :tasks, :id => @task, :action => :refuse, :confirm => '¿Estás seguro?' do
+				%button#refuse-task.btn.btn-mini(data-toggle="tooltip-delete-task" title="Dejar de seguir la tarea")
+					%i.icon-remove

@@ -1,0 +1,37 @@
+#big_name_box
+  .big_name.contact_id(id = '#{@contact.id}') #{@contact.name}
+%hr
+
+.row
+  .span2.offset1
+    = render :partial => '/bones/contact_bone_counter'
+
+  .span4.offset1
+    %strong
+      = mail_to @contact.email
+
+  .span1.offset3
+    = link_to contact_path(@contact), :method => :delete, :confirm => 'Seguro?' do
+      %button#delete-task.btn.btn-mini(data-toggle="tooltip-delete-task" title="Eliminar contacto")
+        %i.icon-trash
+
+    = link_to edit_contact_path(@contact) do
+      %button#edit-task.btn.btn-mini(data-toggle="tooltip-edit-task" title="Editar contacto")
+        %i.icon-pencil
+
+
+
+= render :partial => '/layouts/notifications'
+
+%strong Tareas compartidas con #{@contact.name}
+%ul#tasks_box.nav.nav-pills
+  - if @contact.tasks
+    - @contact.tasks.each do |task|
+      %li{:id => task.id}
+        =link_to task_path(task) do
+          =task.name
+  - else
+    Ninguno
+#tasks_drop_box.alert-error
+  %i.icon-trash
+  Suelta aquí un usuario para dejar de invitarlo a la tarea

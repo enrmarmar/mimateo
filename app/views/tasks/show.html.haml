@@ -1,0 +1,40 @@
+#big_name_box
+	.big_name.task_id(id = '#{@task.id}') #{@task.name}
+
+%hr
+
+= render :partial => 'task_controls'
+
+= render :partial => '/layouts/notifications'
+
+
+
+- if @task.description
+	%strong
+		Descripción:
+	.well
+		= @task.description
+
+%strong Contactos invitados:
+%ul#contacts_box.nav.nav-pills
+	- if @task.contacts
+		- @task.contacts.each do |contact|
+			%li{:id => contact.id}
+				=link_to contact_path(contact) do
+					%i.icon-user
+					=contact.name
+	- else
+		Ninguno
+- if @task.contacts && (@current_user.owns_task? @task)
+	¡Dales un hueso a quienes te ayudan!
+	%img#bone(src='/assets/bone-small.png' data-toggle="tooltip-give-bone" title="Arrastra a un contacto invitado para darle un hueso")
+
+%br
+%br
+%br
+
+#contacts_drop_box.alert-error
+	%i.icon-trash
+	Suelta aquí un usuario para dejar de invitarlo a la tarea
+
+= render :partial => 'message_list'

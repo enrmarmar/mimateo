@@ -1,0 +1,83 @@
+!!!5
+
+%html(lang = 'es')
+	%head
+		%title Mi Mateo
+		= stylesheet_link_tag 'twitter/bootstrap'
+		= stylesheet_link_tag 'application'
+		= javascript_include_tag 'twitter/bootstrap'
+		= javascript_include_tag 'application'
+		= csrf_meta_tags
+
+	%body
+		#top_container
+			.row-fluid
+				%div#logo.span8
+					%h1 Mi Mateo
+					%h2 El organizador social.
+					= render :partial => '/bones/global_bone_counter'
+						
+				%div#login.span4
+					%div#login_panel.well
+						= render :partial => '/sessions/login_panel'
+			
+		#flash_hook
+			- if flash[:notice]
+				.alert.alert
+					%button.close(type="button" data-dismiss="alert") &times;
+					= flash[:notice]
+			- elsif flash[:warning]
+				.alert.alert-error
+					%button.close(type="button" data-dismiss="alert") &times;
+					= flash[:warning]
+			- elsif flash[:error]
+				.alert.alert-error
+					%button.close(type="button" data-dismiss="alert") &times;
+					= flash[:error]
+
+		#main_container
+			.row-fluid
+				#left.span2
+					#left_column.well
+						%span
+							%strong Tareas
+							- if @current_user
+								%a.btn.btn-mini.pull-right(href = new_task_path data-toggle="tooltip-add-task" title="Añadir tarea")
+									%i.icon-plus	
+						%hr
+						%ul.nav.nav-pills.nav-stacked#tasks
+							- if @sideTasks
+								- @sideTasks.each do |task|
+									%li{:id => task.id}
+										= link_to task_path(task) do
+											- unless @current_user.owns_task? task
+												%i.icon-share
+											= task.name
+											- if task.updated_for? @current_user
+												%i.icon-exclamation-sign
+											- if task.unread_for? @current_user
+												%i.icon-envelope
+							- else
+								%p No hay tareas
+				#main.span8
+					#content.well
+						= yield
+				#right.span2
+					#right_column.well.small-well
+						%span
+							%strong Contactos
+							- if @current_user
+								%a.btn.btn-mini.pull-right(href = new_contact_path data-toggle="tooltip-add-contact" title="Añadir contacto")
+									%i.icon-plus
+							%hr
+						%ul.nav.nav-pills.nav-stacked#contacts
+							- if @sideContacts
+								- @sideContacts.each do |contact|
+									%li{:id => contact.id}
+										=link_to contact_path(contact) do
+											%i.icon-user
+											=contact.name
+											- if contact.updated
+												%i.icon-exclamation-sign
+							- else
+								%p No hay contactos

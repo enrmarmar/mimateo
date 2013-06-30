@@ -1,0 +1,14 @@
+- unless @contact.errors.empty?
+  #warning.alert.alert-error
+    Se han producido los siguientes errores:
+    %ul
+      - @contact.errors.full_messages.each do |error|
+        %li= error
+
+= label :contact, :name, 'Nombre'
+= text_field :contact, :name, :required => true
+= label :contact, :email, 'Dirección de correo'
+= email_field :contact, :email, :required => true
+
+%br
+%br

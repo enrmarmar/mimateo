@@ -1,0 +1,7 @@
+= form_tag task_path(@task), :method => :put do
+
+	= render :partial => 'task_form'
+
+	= submit_tag 'Guardar cambios'
+
+= link_to 'Volver', tasks_path
