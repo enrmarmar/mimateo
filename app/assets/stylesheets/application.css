@@ -48,7 +48,7 @@ body{
   background-image: -o-linear-gradient(top, rgb(255,255,255), rgb(200,100,0)); // white to brown
   background-image: linear-gradient(to bottom, rgb(255,255,255), rgb(200,100,0)); // white to brown
   border-color: rgba(255,200,0,0.1) rgba(255,200,0,0.1) rgba(255,200,0,0.25); // yellow-orange 10% 10% 25%
-  border-bottom-color: rgba(255,200,0); // yellow-orange
+  border-bottom-color: rgb(255,200,0); // yellow-orange
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffc86400', GradientType=0); // white to brown
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
