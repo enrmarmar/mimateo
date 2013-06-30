@@ -5,8 +5,6 @@ gem 'rails', '3.1.0'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
-
 gem 'omniauth-twitter'
 gem "omniauth-google-oauth2"
 
@@ -43,5 +41,10 @@ end
 gem 'haml'
 
 group :development, :test do
+  gem 'sqlite3'
   gem 'ruby-debug19'
+end
+
+group :production do
+  gem 'pg' # use PostgreSQL in production (Heroku)
 end
