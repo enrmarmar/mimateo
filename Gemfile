@@ -8,9 +8,7 @@ gem 'rails', '3.1.0'
 gem 'omniauth-twitter'
 gem "omniauth-google-oauth2"
 
-gem 'therubyracer'
-gem 'less-rails'
-gem 'less-rails-bootstrap'
+
 
 
 # Gems used only for assets and not required
@@ -19,10 +17,14 @@ group :assets do
   gem 'sass-rails', "  ~> 3.1.0"
   gem 'coffee-rails', "~> 3.1.0"
   gem 'uglifier'
+  gem 'therubyracer'
+  gem 'less-rails'
+  gem 'less-rails-bootstrap'
+  gem 'jquery-rails'
+  gem 'jquery-ui-rails'
 end
 
-gem 'jquery-rails'
-gem 'jquery-ui-rails'
+
 
 # Use unicorn as the web server
 # gem 'unicorn'
