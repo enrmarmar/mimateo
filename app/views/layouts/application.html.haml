@@ -15,11 +15,14 @@
 				%div#logo.span8
 					%h1 Mi Mateo
 					%h2 El organizador social.
-					= render :partial => '/bones/global_bone_counter'
 						
 				%div#login.span4
 					%div#login_panel.well
-						= render :partial => '/sessions/login_panel'
+						.row
+							.span6.offset1
+								= render :partial => '/sessions/login_panel'
+							.span3.offset2
+								= render :partial => '/bones/global_bone_counter'
 			
 		#flash_hook
 			- if flash[:notice]
