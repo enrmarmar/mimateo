@@ -87,13 +87,15 @@ class TasksController < ApplicationController
     @task = Task.find_by_id params[:id]
     access_denied and return unless @current_user.owns_task? @task
     @contact = Contact.find_by_id params[:contact]
-    @user = User.find_by_id @contact.referenced_user_id
-    @referenced_contact = @user.contacts.find_by_referenced_user_id @current_user.id
-    if @user == @current_user
+    @user = @contact.referenced_user
+    if !@user
+      flash[:warning] = "No puedes invitarle, ya que #{@contact.name} aun no es usuario de Mi Mateo"
+    elsif @user == @current_user
       flash[:warning] = "No puedes invitarte a ti mismo!"
     elsif @user.is_invited_to_task? @task
       flash[:warning] = "El usuario #{@contact.name} ya estaba invitado a #{@task.name}"
     else
+      @referenced_contact = @user.contacts.find_by_referenced_user_id(@current_user.id)
       @task.contacts << @contact
       @task.save
       @task.mark_as_pending_for @user

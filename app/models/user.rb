@@ -11,12 +11,17 @@ class User < ActiveRecord::Base
   has_many :taken_bones, class_name: 'Bone', foreign_key: 'taker_id'
 
 	def self.create_with_omniauth auth
-		User.create!(
+		user = User.create!(
 			:provider => auth['provider'],
 			:uid => auth['uid'],
 			:name => auth['info']['name'],
 			:email => auth['info']['email']
 			)
+    
+    Contact.where(:email => user.email).each do |contact|
+      contact.referenced_user_id = user.id
+      contact.save
+    end
 	end
 
 	def self.authenticate login

@@ -1,17 +1,19 @@
 class Contact < ActiveRecord::Base
-	validates :name, :presence=>true
-	validates :email, :presence=>true
-	validates :email,
-	:format => { :with => /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/, :message => ": Direccion email incorrecta" }
-	# TODO: Prevent user from adding himself as a contact
-	# TODO: Validate email uniqueness on user_id scope
 	belongs_to :user
-	# TODO: Change foreign key name to owner_user_id
 	has_many :invites
 	has_many :tasks, :through => :invites, :uniq => true
 	has_many :notifications
 	belongs_to :referenced_user, :class_name => "User"
-	before_save do
+	
+  validates :name, :presence=>true
+  validates :email, :presence=>true
+  validates :email,
+  :format => { :with => /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/, :message => ": direccion email incorrecta" }
+  validate :unique_name?
+  validate :unique_email?
+  validate :not_himself?
+
+  before_save do
 		if referenced_user = User.find_by_email(self.email)
 			self.referenced_user = referenced_user
 		end
@@ -26,5 +28,19 @@ class Contact < ActiveRecord::Base
     notification.save if referenced_contact
     # in case A deletes contact B and, in revenge, B deletes contact A... A shouldn't get an empty notification 
 	end
+
+  private
+
+  def unique_name?
+    errors.add(:base, "Ya tienes otro contacto con el mismo nombre") if self.user.contacts.find_by_name(self.name)
+  end
+
+  def unique_email?
+    errors.add(:base, "Ya tienes otro contacto con el mismo email") if self.user.contacts.find_by_email(self.email)
+  end
+
+  def not_himself?
+    errors.add(:base, "No te puedes agregar a ti mismo como contacto") if self.email == self.user.email
+  end
 
 end

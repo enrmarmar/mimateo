@@ -78,8 +78,11 @@
 								- @sideContacts.each do |contact|
 									%li{:id => contact.id}
 										=link_to contact_path(contact) do
-											%i.icon-user
-											=contact.name
+											- if contact.referenced_user
+												%i.icon-user
+											- else
+												%i.icon-question-sign
+											= contact.name
 											- if contact.updated
 												%i.icon-exclamation-sign
 							- else

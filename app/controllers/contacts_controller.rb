@@ -22,7 +22,7 @@ class ContactsController < ApplicationController
     if @contact.save
       # Create a pending contact for the referenced user
       if User.find_by_email(@contact.email)
-        unless @contact.referenced_user.user_as_contact(@current_user)
+        unless @contact.referenced_user.user_as_contact_for(@current_user)
           @referenced_contact = Contact.new
           @referenced_contact.user = @contact.referenced_user
           @referenced_contact.name = @current_user.name
