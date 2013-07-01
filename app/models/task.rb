@@ -111,7 +111,7 @@ class Task < ActiveRecord::Base
 			self.contacts.each do |contact|
 				unless self.pending_for? contact.referenced_user
 					notification = Notification.new
-		      notification.action = '#{action}_task'
+		      notification.action = action + '_task'
 		      notification.user = contact.referenced_user
 		      notification.contact = self.user.user_as_contact_for contact.referenced_user
 		      notification.task = self
