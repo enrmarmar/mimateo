@@ -8,8 +8,10 @@ class ContactsController < ApplicationController
     @contact.save
     @sideContacts = @current_user.active_contacts
     @notifications = @contact.notifications
-    @bones_given_to_contact = @current_user.given_bones.where(:taker_id => @contact.referenced_user.id).sum(:amount)
-    @bones_taken_from_contact = @current_user.taken_bones.where(:giver_id => @contact.referenced_user.id).sum(:amount)
+    if @user = @contact.referenced_user
+      @bones_given_to_contact = @current_user.given_bones.where(:taker_id => @user.id).sum(:amount)
+      @bones_taken_from_contact = @current_user.taken_bones.where(:giver_id => @user.id).sum(:amount)
+    end
     # @notifications = @current_user.notifications.where(:contact_id => @contact)
   end
 

@@ -1,8 +1,9 @@
-#contact_bone_counter(data-toggle="tooltip-bone-counter" title="Has dado #{@bones_given_to_contact} hueso/s a #{@contact.name} y has recibido #{@bones_taken_from_contact}")
-  %i.icon-chevron-up
-  %span#bones_given
-    = @bones_given_to_contact
-  %img(src='/assets/bone-small.png')
-  %span#bones_given
-    = @bones_taken_from_contact
-  %i.icon-chevron-down
+- if @user
+  #contact_bone_counter(data-toggle="tooltip-bone-counter" title="Has dado #{@bones_given_to_contact} hueso/s a #{@contact.name} y has recibido #{@bones_taken_from_contact}")
+    %i.icon-chevron-up
+    %span#bones_given
+      = @bones_given_to_contact
+    %img(src='/assets/bone-small.png')
+    %span#bones_given
+      = @bones_taken_from_contact
+    %i.icon-chevron-down
