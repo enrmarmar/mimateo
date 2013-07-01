@@ -79,6 +79,16 @@ class Task < ActiveRecord::Base
 		invite = self.invites.find_by_contact_id contact
 		invite.destroy
 		user.notifications.where(:task_id => self.id).destroy_all
+		self.notify_refused_by user
+	end
+
+	def notify_refused_by user
+		notification = Notification.new
+		notification.action = 'refused_task'
+		notification.user = self.user
+		notification.contact = user.user_as_contact_for self.user
+		notification.task = self
+		notification.save
 	end
 
 	%w(completed deleted postponed unread).each do |method|

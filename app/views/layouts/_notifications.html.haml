@@ -45,4 +45,8 @@
         - when 'sent_bone'
           =link_to notification.contact_name, contact_path(notification.contact) 
           te ha enviado #{notification.amount} hueso/s por
+          =link_to notification.task_name, task_path(notification.task)
+        - when 'refused_task'
+          =link_to notification.contact_name, contact_path(notification.contact)
+          ha rechazado la tarea
           =link_to notification.task_name, task_path(notification.task) 
