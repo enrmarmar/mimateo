@@ -1,0 +1,18 @@
+#big_name_box
+  .big_name Invitaciones a #{@task.name}
+%hr
+
+%ul
+  - @contacts.each do |contact|
+    - if @user = contact.referenced_user
+      %li
+        - if @user.is_invited_to_task? @task
+          = link_to :controller => 'tasks', :action => 'uninvite', :id => @task.id, :contact => contact.id do
+            Expulsar a #{contact.name}
+        - else
+          = link_to :controller => 'tasks', :action => 'invite', :id => @task.id, :contact => contact.id do
+            Invitar a #{contact.name}
+
+%br
+%br
+= link_to 'Volver a la tarea', task_path(@task)

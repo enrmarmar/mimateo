@@ -78,57 +78,21 @@ class Task < ActiveRecord::Base
 		contact = user.user_as_contact_for self.user
 		invite = self.invites.find_by_contact_id contact
 		invite.destroy
+		user.notifications.where(:task_id => self.id).destroy_all
 	end
 
-	def notify_completed
-		self.contacts.each do |contact|
-			unless self.pending_for? contact.referenced_user
-				notification = Notification.new
-	      notification.action = 'completed_task'
-	      notification.user = contact.referenced_user
-	      notification.contact = self.user.user_as_contact_for contact.referenced_user
-	      notification.task = self
-	      notification.save
-	    end
-		end
-	end
-
-	def notify_updated
-		self.contacts.each do |contact|
-			unless self.pending_for? contact.referenced_user
-				notification = Notification.new
-	      notification.action = 'updated_task'
-	      notification.user = contact.referenced_user
-	      notification.contact = self.user.user_as_contact_for contact.referenced_user
-	      notification.task = self
-	      notification.save
-	    end
-		end
-	end
-
-	def notify_postponed
-		self.contacts.each do |contact|
-			unless self.pending_for? contact.referenced_user
-				notification = Notification.new
-	      notification.action = 'postponed_task'
-	      notification.user = contact.referenced_user
-	      notification.contact = self.user.user_as_contact_for contact.referenced_user
-	      notification.task = self
-	      notification.save
-	    end
-		end
-	end
-
-	def notify_deleted
-		self.contacts.each do |contact|
-			unless self.pending_for? contact.referenced_user
-				notification = Notification.new
-	      notification.action = 'deleted_task'
-	      notification.user = contact.referenced_user
-	      notification.contact = self.user.user_as_contact_for contact.referenced_user
-	      notification.task = self
-	      notification.save
-	    end
+	%w(completed deleted postponed unread).each do |method|
+		define_method "notify_#{method}" do
+			self.contacts.each do |contact|
+				unless self.pending_for? contact.referenced_user
+					notification = Notification.new
+		      notification.action = '#{action}_task'
+		      notification.user = contact.referenced_user
+		      notification.contact = self.user.user_as_contact_for contact.referenced_user
+		      notification.task = self
+		      notification.save
+		    end
+			end
 		end
 	end
 

@@ -83,6 +83,18 @@ class TasksController < ApplicationController
     redirect_to task_path @task
   end
 
+  def invite_with_list
+    @task = Task.find_by_id params[:id]
+    access_denied and return unless @current_user.owns_task? @task
+    @contacts = @current_user.contacts
+  end
+
+  def give_bones_with_list
+    @task = Task.find_by_id params[:id]
+    access_denied and return unless @current_user.owns_task? @task
+    @contacts = @task.contacts
+  end
+
   def invite
     @task = Task.find_by_id params[:id]
     access_denied and return unless @current_user.owns_task? @task
