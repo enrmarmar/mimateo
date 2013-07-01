@@ -13,12 +13,13 @@
   - @pendingTasks.each do |task|
     .alert
       #{task.user.name} te ha invitado a la tarea #{task.name}
-      = link_to :controller => :tasks, :action => :accept, :id => task.id do
-        %button#accept-task.btn.btn-mini(data-toggle="tooltip-accept-task" title="Aceptar tarea")
-          %i.icon-thumbs-up
       = link_to :controller => :tasks, :action => :refuse, :id => task.id do
-        %button#refuse-task.btn.btn-mini(data-toggle="tooltip-accept-task" title="Rechazar tarea")
+        %button#refuse-task.btn.btn-mini.pull-right(data-toggle="tooltip-accept-task" title="Rechazar tarea")
           %i.icon-thumbs-down
+      = link_to :controller => :tasks, :action => :accept, :id => task.id do
+        %button#accept-task.btn.btn-mini.pull-right(data-toggle="tooltip-accept-task" title="Aceptar tarea")
+          %i.icon-thumbs-up
+      
 
 - if @notifications
   - @notifications.each do |notification|
@@ -49,4 +50,8 @@
         - when 'refused_task'
           =link_to notification.contact_name, contact_path(notification.contact)
           ha rechazado la tarea
-          =link_to notification.task_name, task_path(notification.task) 
+          =link_to notification.task_name, task_path(notification.task)
+        - when 'ends_today_task'
+          ¡La tarea
+          =link_to notification.task_name, task_path(notification.task)
+          termina hoy!

@@ -6,6 +6,10 @@ class Task < ActiveRecord::Base
 	has_many :messages, :dependent => :delete_all
 	has_many :notifications, :dependent => :delete_all
 
+	def ends_today?
+		return self.deadline == Time.now.to_date
+	end
+
 	def updated_for? user
 		if user.owns_task? self
 			return self.updated
@@ -40,6 +44,7 @@ class Task < ActiveRecord::Base
 			invite.unread = false
 			invite.save
 		end
+		user.notifications.where(:task_id => self.id, :action => 'unread_message').destroy_all
 	end
 
 	def mark_as_updated
@@ -91,8 +96,18 @@ class Task < ActiveRecord::Base
 		notification.save
 	end
 
-	%w(completed deleted postponed unread).each do |method|
-		define_method "notify_#{method}" do
+	def notify_ends_today_for user
+		unless user.notifications.where(:task_id => self.id, :action => 'ends_today_task').first
+			notification = Notification.new
+      notification.action = 'ends_today_task'
+      notification.user = user
+      notification.task = self
+      notification.save
+    end
+	end
+
+	%w(completed deleted postponed).each do |action|
+		define_method "notify_#{action}" do
 			self.contacts.each do |contact|
 				unless self.pending_for? contact.referenced_user
 					notification = Notification.new

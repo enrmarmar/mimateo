@@ -12,12 +12,13 @@
 	%body
 		#top_container
 			.row-fluid
-				%div#logo.span8
-					%h1 Mi Mateo
-					%h2 El organizador social.
+				= link_to tasks_path do
+					#logo.span8
+						%h1 Mi Mateo
+						%h2 El organizador social.
 						
-				%div#login.span4
-					%div#login_panel.well
+				#login.span4
+					#login_panel.well
 						.row
 							.span6.offset1
 								= render :partial => '/sessions/login_panel'
@@ -60,6 +61,8 @@
 												%i.icon-exclamation-sign
 											- if task.unread_for? @current_user
 												%i.icon-envelope
+											- if task.ends_today?
+												%i.icon-bell
 							- else
 								%p No hay tareas
 				#main.span8

@@ -12,6 +12,8 @@ class ApplicationController < ActionController::Base
       # TODO: store these numbers in User model to improve performance
       @bones_given = @current_user.given_bones.sum(:amount)
       @bones_taken = @current_user.taken_bones.sum(:amount)
+      @current_user.last_logged_in = Time.now
+      @current_user.save
   	else
       flash[:notice] = "Debe ingresar como usuario para utilizar Mi Mateo"
       redirect_to '/index' and return

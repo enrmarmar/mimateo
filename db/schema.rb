@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130629131807) do
+ActiveRecord::Schema.define(:version => 20130701213041) do
 
   create_table "bones", :force => true do |t|
     t.integer  "giver_id"
@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(:version => 20130629131807) do
     t.string   "uid"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "last_logged_in"
   end
 
 end
