@@ -22,6 +22,7 @@ end
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'touchpunch-rails'
 
 # Use unicorn as the web server
 # gem 'unicorn'
