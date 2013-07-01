@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_many :taken_bones, class_name: 'Bone', foreign_key: 'taker_id'
 
   before_save do
-    self.tasks do |task|
+    self.tasks.each do |task|
       unless task.pending_for? self
         task.notify_ends_today_for(self) if task.ends_today?
       end

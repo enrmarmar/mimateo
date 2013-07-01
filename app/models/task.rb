@@ -106,7 +106,7 @@ class Task < ActiveRecord::Base
     end
 	end
 
-	%w(completed deleted postponed).each do |action|
+	%w(updated completed deleted postponed).each do |action|
 		define_method "notify_#{action}" do
 			self.contacts.each do |contact|
 				unless self.pending_for? contact.referenced_user

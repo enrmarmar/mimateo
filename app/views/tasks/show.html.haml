@@ -9,7 +9,7 @@
 
 
 
-- if @task.description
+- unless @task.description.blank?
 	%strong
 		Descripción:
 	.well
