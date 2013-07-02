@@ -30,7 +30,7 @@
       %li{:id => task.id}
         =link_to task_path(task) do
           =task.name
-        - if task.pending_for? @contact.referenced_user
+          - if task.pending_for? @contact.referenced_user
             %i.icon-question-sign
   - else
     Ninguno

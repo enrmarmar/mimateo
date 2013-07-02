@@ -51,6 +51,10 @@
           =link_to notification.contact_name, contact_path(notification.contact)
           ha rechazado la tarea
           =link_to notification.task_name, task_path(notification.task)
+        - when 'accepted_task'
+          =link_to notification.contact_name, contact_path(notification.contact)
+          ha aceptado la tarea
+          =link_to notification.task_name, task_path(notification.task)
         - when 'ends_today_task'
           ¡La tarea
           =link_to notification.task_name, task_path(notification.task)

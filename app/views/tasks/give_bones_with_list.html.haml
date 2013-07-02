@@ -2,12 +2,15 @@
   .big_name Dar huesos por la tarea #{@task.name}
 %hr
 
-%ul
-  - @contacts.each do |contact|
-    - if @user = contact.referenced_user
-      %li
-        = link_to :controller => 'bones', :action => 'give', :amount => 1, :contact => contact.id do
-          Dar un hueso a #{contact.name}
+- if @contacts
+  %ul
+    - @contacts.each do |contact|
+      - if @user = contact.referenced_user
+        %li
+          = link_to :controller => 'bones', :action => 'give', :amount => 1, :contact => contact.id do
+            Dar un hueso a #{contact.name}
+- else
+  No hay contactos invitados a los que puedas dar huesos
 %br
 %br
 = link_to 'Volver a la tarea', task_path(@task)

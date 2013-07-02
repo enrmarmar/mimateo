@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
 
   def index
-    @tasks = @current_user.tasks + @current_user.active_invited_tasks.to_a
+    @tasks = @current_user.active_tasks
     @pendingTasks = @current_user.pending_invited_tasks
     @pendingContacts = @current_user.pending_contacts
     @notifications = @current_user.notifications
@@ -12,7 +12,7 @@ class TasksController < ApplicationController
     access_denied and return unless @current_user.owns_task?(@task) || @current_user.is_invited_to_task?(@task)
     access_denied and return if @task.pending_for? @current_user
     @task.mark_as_read_for @current_user
-    @sideTasks = @current_user.tasks + @current_user.active_invited_tasks.to_a
+    @sideTasks = @current_user.active_tasks
     @notifications = @current_user.notifications.where(:task_id => @task)
   end
 
@@ -147,6 +147,7 @@ class TasksController < ApplicationController
     access_denied and return unless @current_user.is_invited_to_task? @task
     @task.unmark_as_pending_for @current_user
     @task.save
+    @task.notify_accepted_by @current_user
     flash[:notice] = "Se ha aceptado la tarea #{@task.name}"
     redirect_to task_path(@task)
   end

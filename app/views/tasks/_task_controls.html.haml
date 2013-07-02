@@ -1,7 +1,9 @@
 .row
 	.span3.offset1
 		- unless @current_user.owns_task? @task
-			Tarea de #{@task.user.name}
+			Tarea de
+			%i.icon-user
+			=link_to @task.user.name, contact_path(@task.user.user_as_contact_for @current_user) 
 
 	.span3.offset1
 		- if @task.completed

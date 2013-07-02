@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_many :taken_bones, class_name: 'Bone', foreign_key: 'taker_id'
 
   before_save do
-    self.tasks.each do |task|
+    self.active_tasks.each do |task|
       unless task.pending_for? self
         task.update_notify_date_for self
       end
@@ -56,6 +56,10 @@ class User < ActiveRecord::Base
 
   def invited_tasks
   	return Task.joins(:contacts).where('contacts.referenced_user_id = ?', self.id)
+  end
+
+  def active_tasks
+    return self.tasks + self.active_invited_tasks.to_a
   end
 
   #TODO: perhaps find another query to avoid uniq! for performance reasons?

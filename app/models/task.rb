@@ -104,6 +104,15 @@ class Task < ActiveRecord::Base
 		notification.save
 	end
 
+	def notify_accepted_by user
+		notification = Notification.new
+		notification.action = 'accepted_task'
+		notification.user = self.user
+		notification.contact = user.user_as_contact_for self.user
+		notification.task = self
+		notification.save
+	end
+
 	def update_notify_date_for user
 		previous_notify_ends_today = user.notifications.where(:task_id => self.id, :action => 'ends_today_task').first
 		previous_notify_deadline_missed = user.notifications.where(:task_id => self.id, :action => 'deadline_missed_task').first
@@ -131,8 +140,6 @@ class Task < ActiveRecord::Base
 		self.notifications.where(:action => 'ends_today_task').destroy_all
     self.notifications.where(:action => 'missed_deadline_task').destroy_all
 	end
-
-
 
 	%w(updated completed deleted postponed).each do |action|
 		define_method "notify_#{action}" do
