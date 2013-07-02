@@ -55,3 +55,7 @@
           ¡La tarea
           =link_to notification.task_name, task_path(notification.task)
           termina hoy!
+        - when 'deadline_missed_task'
+          ¡Se ha agotado el plazo de la tarea
+          =link_to notification.task_name, task_path(notification.task)
+          !

@@ -63,6 +63,8 @@
 												%i.icon-envelope
 											- if task.ends_today?
 												%i.icon-bell
+											- elsif task.deadline_missed?
+												%i.icon-warning-sign
 							- else
 								%p No hay tareas
 				#main.span8

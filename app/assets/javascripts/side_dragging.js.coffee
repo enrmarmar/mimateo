@@ -11,6 +11,7 @@ $(document).ready ->
       element.find("i.icon-exclamation-sign").remove()
       element.find("i.icon-envelope").remove()
       element.find("i.icon-bell").remove()
+      element.find("i.icon-warning-sign").remove()
       element.children("a").append("<i class='icon-question-sign'></i>")
       element.draggable
           helper: 'clone'

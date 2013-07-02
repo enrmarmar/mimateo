@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   before_save do
     self.tasks.each do |task|
       unless task.pending_for? self
-        task.notify_ends_today_for(self) if task.ends_today?
+        task.update_notify_date_for self
       end
     end
   end

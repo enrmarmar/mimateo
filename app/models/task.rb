@@ -7,7 +7,15 @@ class Task < ActiveRecord::Base
 	has_many :notifications, :dependent => :delete_all
 
 	def ends_today?
-		return self.deadline == Time.now.to_date
+		return self.deadline == Time.now.localtime.to_date
+	end
+
+	def deadline_missed?
+		if self.deadline
+			return self.deadline.to_time.to_i < Time.now.localtime.to_i
+		else
+			return false
+		end
 	end
 
 	def updated_for? user
@@ -96,15 +104,35 @@ class Task < ActiveRecord::Base
 		notification.save
 	end
 
-	def notify_ends_today_for user
-		unless user.notifications.where(:task_id => self.id, :action => 'ends_today_task').first
-			notification = Notification.new
-      notification.action = 'ends_today_task'
-      notification.user = user
-      notification.task = self
-      notification.save
+	def update_notify_date_for user
+		previous_notify_ends_today = user.notifications.where(:task_id => self.id, :action => 'ends_today_task').first
+		previous_notify_deadline_missed = user.notifications.where(:task_id => self.id, :action => 'deadline_missed_task').first
+		if self.ends_today?
+			unless previous_notify_ends_today
+				notification = Notification.new
+	      notification.action = 'ends_today_task'
+	      notification.user = user
+	      notification.task = self
+	      notification.save
+	    end
+	  elsif self.deadline_missed?
+	  	previous_notify_ends_today.destroy if previous_notify_ends_today
+	  	unless previous_notify_deadline_missed
+	  		notification = Notification.new
+	      notification.action = 'deadline_missed_task'
+	      notification.user = user
+	      notification.task = self
+	      notification.save
+	  	end
     end
 	end
+
+	def clear_notify_date
+		self.notifications.where(:action => 'ends_today_task').destroy_all
+    self.notifications.where(:action => 'missed_deadline_task').destroy_all
+	end
+
+
 
 	%w(updated completed deleted postponed).each do |action|
 		define_method "notify_#{action}" do

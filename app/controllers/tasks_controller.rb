@@ -67,7 +67,20 @@ class TasksController < ApplicationController
     @task.save
     @task.mark_as_updated
     @task.notify_completed
+    @task.clear_notify_date
     flash[:notice] = "La tarea #{@task.name} se ha marcado como completada."
+    render :nothing => true and return if request.xhr?
+    redirect_to task_path @task
+  end
+
+  def postpone
+    @task = Task.find_by_id params[:id]
+    access_denied and return unless @current_user.owns_task? @task
+    @task.deadline = Time.now.localtime.to_date + 1
+    @task.save
+    @task.mark_as_updated
+    @task.clear_notify_date
+    flash[:notice] = "La tarea #{@task.name} se ha pospuesto un dia."
     render :nothing => true and return if request.xhr?
     redirect_to task_path @task
   end
