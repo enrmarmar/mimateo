@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 class Task < ActiveRecord::Base
 	validates :name, :presence=>true
 	belongs_to :user
@@ -6,38 +8,52 @@ class Task < ActiveRecord::Base
 	has_many :messages, :dependent => :delete_all
 	has_many :notifications, :dependent => :delete_all
 
+	#TODO When in the same week for example return 'friday' instead of date
+	def deadline_as_words
+		today = Time.now.localtime.to_date
+		case self.deadline
+		when today
+			'hoy'
+		when today + 1
+			'mañana'
+		else
+			self.deadline
+		end
+	end
+
+
 	def ends_today?
-		return self.deadline == Time.now.localtime.to_date
+		self.deadline == Time.now.localtime.to_date
 	end
 
 	def deadline_missed?
 		if self.deadline
-			return self.deadline.to_time.to_i < Time.now.localtime.to_i
+			self.deadline.to_time.to_i < Time.now.localtime.to_i
 		else
-			return false
+			false
 		end
 	end
 
 	def updated_for? user
 		if user.owns_task? self
-			return self.updated
+			self.updated
 		elsif user.is_invited_to_task? self
 			contact = self.user.contacts.find_by_referenced_user_id user.id
-			return self.invites.find_by_contact_id(contact.id).updated
+			self.invites.find_by_contact_id(contact.id).updated
 		end
 	end
 
 	def unread_for? user
 		if user.owns_task? self
-			return self.unread
+			self.unread
 		elsif user.is_invited_to_task? self
 			contact = self.user.contacts.find_by_referenced_user_id user.id
-			return self.invites.find_by_contact_id(contact.id).unread
+			self.invites.find_by_contact_id(contact.id).unread
 		end
 	end
 
 	def pending_for? user
-		return user.is_invited_to_task?(self) && self.invites.find_by_contact_id(user.user_as_contact_for self.user).pending
+		user.is_invited_to_task?(self) && self.invites.find_by_contact_id(user.user_as_contact_for self.user).pending
 	end
 
 	def mark_as_read_for user
@@ -138,7 +154,7 @@ class Task < ActiveRecord::Base
 
 	def clear_notify_date
 		self.notifications.where(:action => 'ends_today_task').destroy_all
-    self.notifications.where(:action => 'missed_deadline_task').destroy_all
+    self.notifications.where(:action => 'deadline_missed_task').destroy_all
 	end
 
 	%w(updated completed deleted postponed).each do |action|

@@ -12,12 +12,16 @@
 				/
 					- if @current_user.owns_task? @task 
 						= link_to :controller => :tasks, :action => :uncomplete, :id => @task do
-							%button#uncomplete-task.btn.btn-mini.btn-danger(data-toggle="tooltip-complete-task" title="Marcar tarea como pendiente")
+							%button#uncomplete-task.btn.btn-mini.btn-danger(data-toggle="tooltip-uncomplete-task" title="Marcar tarea como pendiente")
 								%i.icon-remove
 		- else
 			%p#task_status
-				Pendiente hasta:
-				= @task.deadline ? @task.deadline : 'indefinido'
+				- if @current_user.owns_task? @task
+					- if @task.ends_today? && @task.deadline_missed?
+						%button#postpone-task.btn.btn-mini(data-toggle="tooltip-postpone-task" title="Posponer la tarea hasta mañana")
+							%i.icon-time
+				Pendiente para:
+				= @task.deadline ? @task.deadline_as_words : 'indefinido'
 				- if @current_user.owns_task? @task
 					%button#complete-task.btn.btn-mini(data-toggle="tooltip-complete-task" title="Marcar tarea como completada")
 						%i.icon-ok

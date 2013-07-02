@@ -41,53 +41,53 @@ class User < ActiveRecord::Base
 	end
 
 	def owns_task? (task)
-		return task.user_id == self.id
+		task.user_id == self.id
 	end
 
   #TODO: find a query for this?
 	def is_invited_to_task? task
     task.contacts.each do |c|
       if c.referenced_user_id == self.id
-      	return true
+      	true
       end
     end
-    return false
+    false
   end
 
   def invited_tasks
-  	return Task.joins(:contacts).where('contacts.referenced_user_id = ?', self.id)
+  	Task.joins(:contacts).where('contacts.referenced_user_id = ?', self.id)
   end
 
   def active_tasks
-    return self.tasks + self.active_invited_tasks.to_a
+    self.tasks + self.active_invited_tasks.to_a
   end
 
   #TODO: perhaps find another query to avoid uniq! for performance reasons?
   def pending_invited_tasks
-  	return self.invited_tasks.joins(:invites).where('invites.pending = ?', true).uniq!
+  	self.invited_tasks.joins(:invites).where('invites.pending = ?', true).uniq!
   end
 
   def active_invited_tasks
-    return self.invited_tasks.joins(:invites).where('invites.pending != ? OR invites.pending IS NULL', true).uniq!
+    self.invited_tasks.joins(:invites).where('invites.pending != ? OR invites.pending IS NULL', true).uniq!
   end
 
   def pending_contacts
-  	return self.contacts.where("pending = ?", true)
+  	self.contacts.where("pending = ?", true)
   end
 
   def active_contacts
-  	return self.contacts.where("pending != ? OR pending IS NULL", true)
+  	self.contacts.where("pending != ? OR pending IS NULL", true)
   end
 
   def user_as_contact_for user
-  	return self.referenced_contacts.find_by_user_id user.id
+  	self.referenced_contacts.find_by_user_id user.id
   end
 
   def existing_notification notification
     if notification.contact
-      return self.notifications.where(:action => notification.action, :task_id => notification.task.id, :contact_id => notification.contact.id).first
+      self.notifications.where(:action => notification.action, :task_id => notification.task.id, :contact_id => notification.contact.id).first
     else
-      return self.notifications.where(:action => notification.action, :task_id => notification.task.id).first
+      self.notifications.where(:action => notification.action, :task_id => notification.task.id).first
     end  
   end
 end
