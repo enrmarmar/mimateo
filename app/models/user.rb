@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
 	def is_invited_to_task? task
     task.contacts.each do |c|
       if c.referenced_user_id == self.id
-      	true
+      	return true
       end
     end
     false
