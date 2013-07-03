@@ -1,65 +1,67 @@
-- if @pendingContacts
-  - @pendingContacts.each do |contact|
-    .alert
-      #{contact.name} te ha agregado como contacto
-      = link_to :controller => :contacts, :action => :accept, :id => contact.id do
-        %button#accept-contact.btn.btn-mini(data-toggle="tooltip-accept-contact" title="Agregar contacto")
-          %i.icon-thumbs-up
-      = link_to :controller => :contacts, :method => :delete, :id => notification.task.id do
-        %button#refuse-contact.btn.btn-mini(data-toggle="tooltip-accept-task" title="Rechazar contacto")
-          %i.icon-thumbs-down
+#pendingContacts
+  - if @pendingContacts
+    - @pendingContacts.each do |contact|
+      .alert
+        #{contact.name} te ha agregado como contacto
+        = link_to :controller => :contacts, :action => :accept, :id => contact.id do
+          %button#accept-contact.btn.btn-mini(data-toggle="tooltip-accept-contact" title="Agregar contacto")
+            %i.icon-thumbs-up
+        = link_to :controller => :contacts, :method => :delete, :id => notification.task.id do
+          %button#refuse-contact.btn.btn-mini(data-toggle="tooltip-accept-task" title="Rechazar contacto")
+            %i.icon-thumbs-down
 
-- if @pendingTasks
-  - @pendingTasks.each do |task|
-    .alert
-      #{task.user.name} te ha invitado a la tarea #{task.name}
-      = link_to :controller => :tasks, :action => :refuse, :id => task.id do
-        %button#refuse-task.btn.btn-mini.pull-right(data-toggle="tooltip-accept-task" title="Rechazar tarea")
-          %i.icon-thumbs-down
-      = link_to :controller => :tasks, :action => :accept, :id => task.id do
-        %button#accept-task.btn.btn-mini.pull-right(data-toggle="tooltip-accept-task" title="Aceptar tarea")
-          %i.icon-thumbs-up
+#pendingTasks
+  - if @pendingTasks
+    - @pendingTasks.each do |task|
+      .alert
+        #{task.user.name} te ha invitado a la tarea #{task.name}
+        = link_to :controller => :tasks, :action => :refuse, :id => task.id do
+          %button#refuse-task.btn.btn-mini.pull-right(data-toggle="tooltip-accept-task" title="Rechazar tarea")
+            %i.icon-thumbs-down
+        = link_to :controller => :tasks, :action => :accept, :id => task.id do
+          %button#accept-task.btn.btn-mini.pull-right(data-toggle="tooltip-accept-task" title="Aceptar tarea")
+            %i.icon-thumbs-up
       
-
-- if @notifications
-  - @notifications.each do |notification|
-    .alert.notification
-      %button.close(id = '#{notification.id}' type="button" data-dismiss="alert") &times;
-      - case notification.action
-        - when 'updated_task'
-          =link_to notification.contact_name, contact_path(notification.contact) 
-          ha actualizado la tarea 
-          =link_to notification.task_name, task_path(notification.task) 
-        - when 'deleted_task'
-          =link_to notification.contact_name, contact_path(notification.contact) 
-          ha eliminado la tarea #{notification.task_name} 
-        - when 'completed_task'
-          =link_to notification.contact_name, contact_path(notification.contact) 
-          ha completado la tarea
-          =link_to notification.task_name, task_path(notification.task) 
-        - when 'unread_message'
-          Tienes #{notification.amount} mensaje/s sin leer en la tarea
-          =link_to notification.task_name, task_path(notification.task) 
-        - when 'deleted_contact'
-          =link_to notification.contact_name, contact_path(notification.contact) 
-          te ha eliminado como contacto
-        - when 'sent_bone'
-          =link_to notification.contact_name, contact_path(notification.contact) 
-          te ha enviado #{notification.amount} hueso/s por
-          =link_to notification.task_name, task_path(notification.task)
-        - when 'refused_task'
-          =link_to notification.contact_name, contact_path(notification.contact)
-          ha rechazado la tarea
-          =link_to notification.task_name, task_path(notification.task)
-        - when 'accepted_task'
-          =link_to notification.contact_name, contact_path(notification.contact)
-          ha aceptado la tarea
-          =link_to notification.task_name, task_path(notification.task)
-        - when 'ends_today_task'
-          ¡La tarea
-          =link_to notification.task_name, task_path(notification.task)
-          termina hoy!
-        - when 'deadline_missed_task'
-          ¡Se ha agotado el plazo de la tarea
-          =link_to notification.task_name, task_path(notification.task)
-          !
+#notifications
+  - if @notifications
+    - @notifications.each do |notification|
+      .alert.notification
+        %button.close(id = '#{notification.id}' type="button" data-dismiss="alert") &times;
+        - case notification.action
+          - when 'updated_task'
+            =link_to notification.contact_name, contact_path(notification.contact) 
+            ha actualizado la tarea 
+            =link_to notification.task_name, task_path(notification.task) 
+          - when 'deleted_task'
+            =link_to notification.contact_name, contact_path(notification.contact) 
+            ha eliminado la tarea #{notification.task_name} 
+          - when 'completed_task'
+            =link_to notification.contact_name, contact_path(notification.contact) 
+            ha completado la tarea
+            =link_to notification.task_name, task_path(notification.task) 
+          - when 'unread_message'
+            Tienes #{notification.amount} mensaje/s sin leer en la tarea
+            =link_to notification.task_name, task_path(notification.task) 
+          - when 'deleted_contact'
+            =link_to notification.contact_name, contact_path(notification.contact) 
+            te ha eliminado como contacto
+          - when 'sent_bone'
+            =link_to notification.contact_name, contact_path(notification.contact) 
+            te ha enviado #{notification.amount} hueso/s por
+            =link_to notification.task_name, task_path(notification.task)
+          - when 'refused_task'
+            =link_to notification.contact_name, contact_path(notification.contact)
+            ha rechazado la tarea
+            =link_to notification.task_name, task_path(notification.task)
+          - when 'accepted_task'
+            =link_to notification.contact_name, contact_path(notification.contact)
+            ha aceptado la tarea
+            =link_to notification.task_name, task_path(notification.task)
+          - when 'ends_today_task'
+            ¡La tarea
+            =link_to notification.task_name, task_path(notification.task)
+            termina hoy!
+          - when 'deadline_missed_task'
+            ¡Se ha agotado el plazo de la tarea
+            =link_to notification.task_name, task_path(notification.task)
+            !

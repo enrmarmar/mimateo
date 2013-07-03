@@ -10,4 +10,3 @@ $(document).ready ->
     request.done ->
       tomorrow = new Date() + 1
       $("#task_status").html("Pendiente para: mañana " + "<button id='complete-task' class='btn btn-mini' data-toggle='tooltip-complete-task' title='Marcar tarea como completada'><i class='icon-ok'></i></button>")
-

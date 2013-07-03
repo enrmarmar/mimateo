@@ -23,4 +23,11 @@ Prueba1::Application.routes.draw do
   match 'auth/:provider/callback' => 'sessions#create'
   match 'auth/:provider' => 'sessions#create',:as => 'login'
   match 'logout' => 'sessions#destroy'
+
+  namespace :api do
+    namespace :v1 do
+      match 'index' => 'tasks#index'
+    end
+  end
+
 end
