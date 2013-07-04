@@ -20,7 +20,7 @@ Prueba1::Application.routes.draw do
 
   match 'auth/:provider' => 'sessions#create',:as => 'login'
   match 'auth/:provider/callback' => 'sessions#create'
-  match 'auth/:provider/failure' => 'sessions#failure'
+  match 'auth/failure' => 'sessions#failure'
   match 'logout' => 'sessions#destroy'
 
   namespace :api do
