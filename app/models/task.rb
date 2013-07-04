@@ -21,7 +21,6 @@ class Task < ActiveRecord::Base
 		end
 	end
 
-
 	def ends_today?
 		self.deadline == Time.now.localtime.to_date
 	end

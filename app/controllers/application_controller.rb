@@ -6,8 +6,7 @@ class ApplicationController < ActionController::Base
   def set_current_user
   	@current_user ||= User.find_by_id(session[:user_id])
   	if @current_user
-      # to_a avoids "can't convert nil into Array" when no active_invited_tasks
-  		@sideTasks = @current_user.tasks + @current_user.active_invited_tasks.to_a
+  		@sideTasks = @current_user.active_tasks
     	@sideContacts = @current_user.active_contacts
       # TODO: store these numbers in User model to improve performance
       @bones_given = @current_user.given_bones.sum(:amount)

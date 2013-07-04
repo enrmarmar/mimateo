@@ -6,11 +6,12 @@ class SessionsController < ApplicationController
 
 	def create
 		auth = request.env["omniauth.auth"]
-		unless auth.error
-			user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth)
-			session[:user_id] = user.id
-			redirect_to tasks_path and return
-		end
+		user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth)
+		session[:user_id] = user.id
+		redirect_to tasks_path and return
+	end
+
+	def failure
 		flash[:warning] = "Error de acceso: " + params[:message]
 		redirect_to '/index' and return
 	end
