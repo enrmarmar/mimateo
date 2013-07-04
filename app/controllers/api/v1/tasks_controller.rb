@@ -1,7 +1,6 @@
-class Api::V1::TasksController < ApplicationController
+class Api::V1::TasksController < Api::V1::BaseController
   def index
-    @current_user = User.first
-    @tasks = @current_user.active_tasks
-    render :text => @tasks.to_json
+    @tasks = Task.all
+    render 'api/index'
   end
 end

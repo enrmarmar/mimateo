@@ -5,6 +5,7 @@ Prueba1::Application.routes.draw do
   
   root :to => redirect('/index')
 
+  match 'api_index' => 'api#index'
   match 'index' => 'sessions#index'
   match 'task/:id/:action' => 'tasks#:action'
   match 'contact/:id/:action' => 'contacts#:action'
@@ -29,5 +30,4 @@ Prueba1::Application.routes.draw do
       match 'index' => 'tasks#index'
     end
   end
-
 end
