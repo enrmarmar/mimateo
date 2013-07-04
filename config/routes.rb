@@ -18,9 +18,9 @@ Prueba1::Application.routes.draw do
   match 'login_as_3' => 'sessions#login_as_3'
   match 'login_as_4' => 'sessions#login_as_4'
 
-  match 'auth/:provider' => 'sessions#create',:as => 'login'
+  match 'auth/:provider' => 'sessions#create', :as => 'login'
   match 'auth/:provider/callback' => 'sessions#create'
-  match '/auth/failure', :to => 'sessions#failure'
+  match 'auth/failure' => 'sessions#failure'
   match 'logout' => 'sessions#destroy'
 
   namespace :api do
