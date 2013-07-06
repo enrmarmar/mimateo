@@ -29,18 +29,19 @@ class Contact < ActiveRecord::Base
   end
 
   after_destroy do
-    affected_user = self.referenced_user
-    # We delete invitations both ways
-    affected_user.tasks.each do |task|
-      task.destroy_invitation_for self.user
+    if affected_user = self.referenced_user
+      # We delete invitations both ways
+      affected_user.tasks.each do |task|
+        task.destroy_invitation_for self.user
+      end
+      self.user.tasks.each do |task|
+        task.destroy_invitation_for affected_user
+      end
+      # We delete notifications both ways
+      self.user.notifications.where(:contact_id => self.id).destroy_all
+      affected_user.notifications.where(:contact_id => self.user.user_as_contact_for(affected_user).id).destroy_all
+      self.notify_deleted
     end
-    self.user.tasks.each do |task|
-      task.destroy_invitation_for affected_user
-    end
-    # We delete notifications both ways
-    self.user.notifications.where(:contact_id => self.id).destroy_all
-    affected_user.notifications.where(:contact_id => self.user.user_as_contact_for(affected_user).id).destroy_all
-    self.notify_deleted
   end
 
   def active?
