@@ -1,4 +1,4 @@
-Prueba1::Application.routes.draw do
+MiMateo::Application.routes.draw do
   resources :contacts
   resources :tasks
   resources :messages

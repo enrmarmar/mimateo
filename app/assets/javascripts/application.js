@@ -7,6 +7,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
-//= require twitter/bootstrap
-//= require jquery.ui.all
-//= require jquery.ui.touch-punch
+//= require twitter/bootstrap/alert
+//= require jquery.ui.draggable
+//= require jquery.ui.droppable
+//= require jquery.ui.tooltip
+//= require jquery.ui.datepicker-es
+//= require jquery.ui.datepicker

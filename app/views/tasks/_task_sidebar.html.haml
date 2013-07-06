@@ -1,0 +1,43 @@
+%ul.nav.nav-pills.nav-list#tasks
+  - if @current_user
+    %a.btn.btn-mini.corner(href = new_task_path data-toggle="tooltip-add-task" title="Añadir tarea")
+      %i.icon-plus
+  %li.nav-header
+    Tareas
+  %br
+  - if @sideTasks
+    - @sideTasks.each do |task|
+      - if task == @task
+        %li.active{:id => task.id}
+          = link_to task_path(task) do
+            - unless @current_user.owns_task? task
+              %i.icon-share
+            = ' ' + task.name
+            - if task.updated_for? @current_user
+              %i.icon-exclamation
+            - if task.unread_for? @current_user
+              %i.icon-envelope
+            - if task.completed?
+              %i.icon-flag
+            - elsif task.ends_today?
+              %i.icon-bell
+            - elsif task.deadline_missed?
+              %i.icon-warning-sign
+      - else
+        %li{:id => task.id}
+          = link_to task_path(task) do
+            - unless @current_user.owns_task? task
+              %i.icon-share
+            = ' ' + task.name
+            - if task.updated_for? @current_user
+              %i.icon-exclamation
+            - if task.unread_for? @current_user
+              %i.icon-envelope
+            - if task.completed?
+              %i.icon-flag
+            - elsif task.ends_today?
+              %i.icon-bell
+            - elsif task.deadline_missed?
+              %i.icon-warning-sign
+  - else
+    %li No hay tareas

@@ -11,6 +11,7 @@ gem "omniauth-google-oauth2"
 gem 'therubyracer'
 gem 'less-rails'
 gem 'less-rails-bootstrap'
+gem "font-awesome-rails"
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -22,7 +23,6 @@ end
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'touchpunch-rails'
 
 gem 'rabl'
 gem 'oj'
@@ -59,3 +59,5 @@ group :test do
   gem 'capybara', "~> 2.0.3"           # lets Cucumber pretend to be a web browser
   gem 'launchy'                        # a useful debugging aid for user stories
 end
+
+gem 'disable_assets_logger', :group => :development

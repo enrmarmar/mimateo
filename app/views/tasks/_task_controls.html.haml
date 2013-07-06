@@ -1,11 +1,13 @@
-.row
-	.span3.offset1
+.row-fluid
+	.span4
 		- unless @current_user.owns_task? @task
 			Tarea de
-			%i.icon-user
-			=link_to @task.user.name, contact_path(@task.user.user_as_contact_for @current_user) 
+			- contact_owner = @task.user.user_as_contact_for @current_user
+			=link_to contact_path(contact_owner) do
+				%i.icon-user
+				= contact_owner.name
 
-	.span3.offset1
+	.span6
 		- if @task.completed
 			%p#task_status
 				Tarea completada 
@@ -26,7 +28,7 @@
 					%button#complete-task.btn.btn-mini(data-toggle="tooltip-complete-task" title="Marcar tarea como completada")
 						%i.icon-ok
 
-	.span1.offset3
+	.span2.btn-group
 		- if @current_user.owns_task? @task
 			= link_to task_path(@task), :method => :delete, :confirm => '¿Estás seguro?' do
 				%button#delete-task.btn.btn-mini(data-toggle="tooltip-delete-task" title="Eliminar tarea")

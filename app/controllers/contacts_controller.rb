@@ -62,10 +62,6 @@ class ContactsController < ApplicationController
   def destroy
     @contact = Contact.find_by_id(params[:id])
     access_denied and return unless @current_user.contacts.include? @contact
-    @contact.notify_deleted
-    @current_user.invited_tasks.each do |task|
-      task.destroy if task.user == @contact.referenced_user
-    end
     @contact.destroy
     flash[:notice] = "Se ha eliminado el contacto #{@contact.name}."
     redirect_to tasks_path

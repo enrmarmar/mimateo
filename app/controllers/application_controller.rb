@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
       @current_user.last_logged_in = Time.now
       @current_user.save
   	else
-      flash[:notice] = "Debe ingresar como usuario para utilizar Mi Mateo"
+      flash[:notice] = "Debe ingresar como usuario/a para utilizar Mi Mateo"
       redirect_to '/index' and return
   	end
   end

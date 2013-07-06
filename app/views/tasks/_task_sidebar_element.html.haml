@@ -1,0 +1,12 @@
+= link_to task_path(task) do
+  - unless @current_user.owns_task? task
+    %i.icon-share
+  = task.name
+  - if task.updated_for? @current_user
+    %i.icon-exclamation-sign
+  - if task.unread_for? @current_user
+    %i.icon-envelope
+  - if task.ends_today?
+    %i.icon-bell
+  - elsif task.deadline_missed?
+    %i.icon-warning-sign

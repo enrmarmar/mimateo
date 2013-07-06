@@ -1,9 +1,9 @@
-#big_name_box
-  .big_name Dar huesos por la tarea #{@task.name}
+#content_title.well
+  Huesos para #{@task.name} dsada sads adsada sd asdsa asdad sadsa ds adsa
 %hr
 
 - if @contacts
-  %ul
+  %ul.unstyled
     - @contacts.each do |contact|
       - if @user = contact.referenced_user
         %li

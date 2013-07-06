@@ -16,7 +16,7 @@ class BonesController < ApplicationController
     end
     bone.save
     bone.notify_sent
-    flash[:notice] = "Se ha mandado #{bone.amount} hueso/s a #{bone.taker.name}"
+    flash[:notice] = "Se ha mandado #{bone.amount} hueso/s a #{(bone.taker.user_as_contact_for @current_user).name}"
     render :nothing => true and return if request.xhr?
     redirect_to :back
   end

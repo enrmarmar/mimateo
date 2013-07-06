@@ -1,15 +1,12 @@
-#big_name_box
-	.big_name.task_id(id = '#{@task.id}') #{@task.name}
-
-%hr
+#content_title.well
+	.task_id(id = '#{@task.id}') #{@task.name}
 
 = render :partial => 'task_controls'
 
 = render :partial => '/layouts/notifications'
 
 - unless @task.description.blank?
-	%strong
-		Descripción:
+	%strong Descripción:
 	.well
 		= @task.description
 = link_to :controller => 'tasks', :action => 'invite_with_list', :id => @task.id do
@@ -29,10 +26,6 @@
 	¡Dales un hueso a quienes te ayudan!
 	= link_to :controller => 'tasks', :action => 'give_bones_with_list', :id => @task.id do
 		%img#bone(src='/assets/bone-small.png' data-toggle="tooltip-give-bone" title="Arrastra a un contacto invitado para darle un hueso")
-
-%br
-%br
-%br
 
 #contacts_drop_box.alert-error
 	%i.icon-trash

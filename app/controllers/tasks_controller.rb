@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 class TasksController < ApplicationController
 
   def index
@@ -42,8 +44,7 @@ class TasksController < ApplicationController
     @task = Task.find_by_id params[:id]
     access_denied and return unless @current_user.owns_task? @task
     if @task.update_attributes params[:task]
-      @task.mark_as_updated
-      @task.notify_updated
+      self.notify_updated
       flash[:notice] = "Se ha actualizado la tarea #{@task.name}."
       redirect_to task_path @task
     else
@@ -114,11 +115,11 @@ class TasksController < ApplicationController
     @contact = Contact.find_by_id params[:contact]
     @user = @contact.referenced_user
     if !@user
-      flash[:warning] = "No puedes invitarle, ya que #{@contact.name} aun no es usuario de Mi Mateo"
+      flash[:warning] = "No puedes invitarle, ya que #{@contact.name} aún no es usuario/a de Mi Mateo"
     elsif @user == @current_user
-      flash[:warning] = "No puedes invitarte a ti mismo!"
+      flash[:warning] = "No puedes invitarte a ti mismo/a!"
     elsif @user.is_invited_to_task? @task
-      flash[:warning] = "El usuario #{@contact.name} ya estaba invitado a #{@task.name}"
+      flash[:warning] = "#{@contact.name} ya estaba invitado/a a #{@task.name}"
     else
       @referenced_contact = @user.contacts.find_by_referenced_user_id(@current_user.id)
       @task.contacts << @contact
@@ -126,7 +127,7 @@ class TasksController < ApplicationController
       @task.mark_as_pending_for @user
       @referenced_contact.updated = true
       @referenced_contact.save
-      flash[:notice] = "#{@contact.name} invitado a #{@task.name}"
+      flash[:notice] = "#{@contact.name} invitado/a a #{@task.name}"
     end
     render :nothing => true and return if request.xhr?
     redirect_to :back
@@ -137,7 +138,7 @@ class TasksController < ApplicationController
     @contact = Contact.find_by_id params[:contact]
     access_denied and return unless @current_user.owns_task? @task
     @task.invites.find_by_contact_id(@contact.id).destroy
-    flash[:notice] = "#{@contact.name} expulsado de #{@task.name}"
+    flash[:notice] = "#{@contact.name} expulsado/a de #{@task.name}"
     render :nothing => true and return if request.xhr?
     redirect_to :back
   end

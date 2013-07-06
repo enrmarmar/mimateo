@@ -1,9 +1,4 @@
-%h2 Nuevo contacto
-
+#content_title.well
+  Nuevo contacto
 = form_tag contacts_path, :method => :post do
-
-	= render :partial => 'contact_form'
-
-	= submit_tag 'Crear contacto'
-
-= link_to 'Volver', tasks_path
+  = render :partial => 'contact_form'

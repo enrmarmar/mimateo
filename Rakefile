@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Prueba1::Application.load_tasks
+MiMateo::Application.load_tasks

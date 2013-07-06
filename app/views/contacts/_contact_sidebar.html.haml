@@ -1,0 +1,45 @@
+%ul.nav.nav-pills.nav-list#contacts
+  %li.nav-header
+    Contactos
+  %br
+  - if @current_user
+    %a.btn.btn-mini.corner(href = new_contact_path data-toggle="tooltip-add-contact" title="Añadir contacto")
+      %i.icon-plus
+  - if @sideContacts
+    - @sideContacts.each do |contact|
+      - if contact == @contact
+        %li.active{:id => contact.id}
+          =link_to contact_path(contact) do
+            - if contact.active?
+              %span(toogle="tooltip-last-logged-in" title="Última conexíón: #{contact.referenced_user.last_logged_in}")
+                %i.icon-user
+                = ' ' + contact.name
+            - elsif contact.referenced_user
+              %span(toogle="tooltip-not-user" title="#{contact.name} no te ha agregado como contacto")
+                %i.icon-question-sign
+                = ' ' + contact.name
+            - else
+              %span(toogle="tooltip-not-user" title="#{contact.name} aún no es usuario/a de Mi Mateo")
+                %i.icon-question-sign
+                = ' ' + contact.name
+            - if contact.updated
+              %i.icon-exclamation-sign
+      - else
+        %li{:id => contact.id}
+          =link_to contact_path(contact) do
+            - if contact.active?
+              %span(toogle="tooltip-last-logged-in" title="Última conexíón: #{contact.referenced_user.last_logged_in}")
+                %i.icon-user
+                = ' ' + contact.name
+            - elsif contact.referenced_user
+              %span(toogle="tooltip-not-user" title="#{contact.name} no te ha agregado como contacto")
+                %i.icon-question-sign
+                = ' ' + contact.name
+            - else
+              %span(toogle="tooltip-not-user" title="#{contact.name} aún no es usuario/a de Mi Mateo")
+                %i.icon-question-sign
+                = ' ' + contact.name
+            - if contact.updated
+              %i.icon-exclamation-sign
+  - else
+    %li No hay contactos

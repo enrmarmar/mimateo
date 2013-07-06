@@ -2,16 +2,29 @@
 
 class Task < ActiveRecord::Base
 	validates :name, :presence=>true
+	validate :name_not_too_long?
 	belongs_to :user
 	has_many :invites, :dependent => :delete_all
 	has_many :contacts, :through => :invites, :uniq => true
 	has_many :messages, :dependent => :delete_all
 	has_many :notifications, :dependent => :delete_all
 
+	before_save do
+		self.updated = true
+	end
+
+	after_save do
+    self.notifications.each do |notification|
+      notification.save
+    end
+	end
+
 	#TODO When in the same week for example return 'friday' instead of date
 	def deadline_as_words
 		today = Time.now.localtime.to_date
 		case self.deadline
+		when nil
+			'indefinido'
 		when today
 			'hoy'
 		when today + 1
@@ -71,8 +84,6 @@ class Task < ActiveRecord::Base
 	end
 
 	def mark_as_updated
-		self.updated = true
-		self.save
 		self.invites.each do |invite|
 			invite.updated = true
 			invite.save
@@ -104,10 +115,11 @@ class Task < ActiveRecord::Base
 
 	def destroy_invitation_for user
 		contact = user.user_as_contact_for self.user
-		invite = self.invites.find_by_contact_id contact
-		invite.destroy
-		user.notifications.where(:task_id => self.id).destroy_all
-		self.notify_refused_by user
+		if invite = self.invites.find_by_contact_id(contact)
+			invite.destroy
+			user.notifications.where(:task_id => self.id).destroy_all
+			self.notify_refused_by user
+		end
 	end
 
 	def notify_refused_by user
@@ -170,5 +182,12 @@ class Task < ActiveRecord::Base
 			end
 		end
 	end
+
+	private
+	# Custom validator
+
+  def name_not_too_long?
+    errors.add(:base, "Nombre demasiado largo, máximo 30 caracteres") if self.name.length > 30
+  end
 
 end

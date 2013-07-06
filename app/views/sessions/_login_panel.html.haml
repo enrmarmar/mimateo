@@ -1,15 +1,10 @@
-- if @current_user
-	%p 
-		Bienvenido,
-		%i.icon-user
-		#{@current_user.name}!
-	%p= link_to 'Desconectar', logout_path
-- else
-	%p= link_to 'Conectar con Google', '/auth/google_oauth2'
-
-Modo pruebas
-%ul.inline
-	%li= button_to 'Ana', '/login_as_1'
-	%li= button_to 'Pedro', '/login_as_2'
-	%li= button_to 'Ramón', '/login_as_3'
-	%li= button_to 'Isabel', '/login_as_4'
+.pull-right
+  - if @current_user
+    %span(toogle="tooltip-last-logged-in" title="Última conexíón: #{@current_user.last_logged_in}")
+      %i.icon-user
+      #{@current_user.name}
+    %a.btn.btn-mini(href = logout_path data-toggle="tooltip-logout" title="Cerrar sesión")
+      %i.icon-off
+  - else
+    %a.btn.btn(href = '/auth/google_oauth2' data-toggle="tooltip-login" title="Conectar con tu cuenta de Google")
+      Conectar con Google

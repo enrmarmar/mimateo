@@ -1,8 +1,7 @@
-#big_name_box
-  .big_name Invitaciones a #{@task.name}
-%hr
+#content_title.well
+  Invitaciones a #{@task.name}
 
-%ul
+%ul.unstyled
   - @contacts.each do |contact|
     - if @user = contact.referenced_user
       %li

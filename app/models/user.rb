@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
 	validates :name, :presence=>true
 	validates :email, :presence=>true, :uniqueness=>true
 	validates :email, :format => { :with => /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/, :message => ": Direccion email incorrecta" }
+  
 	has_many :tasks, :dependent => :delete_all
 	has_many :contacts, :dependent => :delete_all
 	has_many :referenced_contacts, :class_name => "Contact", :foreign_key => "referenced_user_id"

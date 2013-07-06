@@ -1,14 +1,17 @@
 - unless @contact.errors.empty?
   #warning.alert.alert-error
     Se han producido los siguientes errores:
+    = button_close
     %ul
       - @contact.errors.full_messages.each do |error|
         %li= error
-
-= label :contact, :name, 'Nombre'
-= text_field :contact, :name, :required => true
-= label :contact, :email, 'Dirección de correo'
-= email_field :contact, :email, :required => true
-
-%br
-%br
+.control-group
+  .input-prepend
+    %span.add-on
+      = label :contact, :name, 'Nombre'
+    = text_field :contact, :name, :required => true
+  .input-prepend
+    %span.add-on
+      = label :contact, :email, 'Dirección de correo'
+    = email_field :contact, :email, :required => true
+  = submit_tag 'Guardar', class: 'btn btn-primary'

@@ -1,16 +1,14 @@
-#big_name_box
-  .big_name.contact_id(id = '#{@contact.id}') #{@contact.name}
-%hr
+#content_title.well
+  .contact_id(id = '#{@contact.id}') #{@contact.name}
 
-.row
-  .span2.offset1
+.row-fluid
+  .span3
+    %strong
+      = mail_to @contact.email, (shortener @contact.email)
+  .span4.offset2
     = render :partial => '/bones/contact_bone_counter'
 
-  .span4.offset1
-    %strong
-      = mail_to @contact.email
-
-  .span1.offset3
+  .span2.offset1.btn-group
     = link_to contact_path(@contact), :method => :delete, :confirm => 'Seguro?' do
       %button#delete-task.btn.btn-mini(data-toggle="tooltip-delete-task" title="Eliminar contacto")
         %i.icon-trash

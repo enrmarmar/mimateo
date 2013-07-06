@@ -1,18 +1,21 @@
 .control-group
-	#big_name_box
-		= text_field :task, :name, :required => true, class: 'input-large span12', placeholder: 'Nueva tarea'
-	%hr
-	.row
-		#task_form_left_column.span4
-			Plazo
-			= text_field :task, :deadline, value: Date.today.to_s
+	#content_title.well
+		= text_field :task, :name, :required => true, class: 'input-title input-block-level', placeholder: 'Nueva tarea'
+	- unless @task.errors.empty?
+		#warning.alert.alert-error
+			Se han producido los siguientes errores:
+			= button_close
+			%ul
+			- @task.errors.full_messages.each do |error|
+				%li= error
+	.row-liquid
+		#task_form_left_column.span6
+			.input-prepend
+				%span.add-on
+					= label :task, :deadline, 'Plazo'
+				= text_field :task, :deadline, value: Date.today.to_s, class: 'input-small'
 			#deadline_picker
-		#task_form_right_column.span8
+		#task_form_right_column.span6
 			= label :task, :description, 'Descripción'
 			= text_area :task, :description, class: 'span12', rows: '6'
-- unless @task.errors.empty?
-	#warning.alert.alert-error
-		Se han producido los siguientes errores:
-	%ul
-		- @task.errors.full_messages.each do |error|
-			%li= error
+			= submit_tag 'Guardar', class: 'btn btn-primary'
