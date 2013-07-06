@@ -1,10 +1,9 @@
-%ul.nav.nav-pills.nav-list#tasks
+%ul.nav.nav-pills.nav-list.nav-stacked#tasks
   - if @current_user
     %a.btn.btn-mini.corner(href = new_task_path data-toggle="tooltip-add-task" title="Añadir tarea")
       %i.icon-plus
   %li.nav-header
     Tareas
-  %br
   - if @sideTasks
     - @sideTasks.each do |task|
       - if task == @task

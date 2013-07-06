@@ -1,7 +1,6 @@
-%ul.nav.nav-pills.nav-list#contacts
+%ul.nav.nav-pills.nav-list.nav-stacked#contacts
   %li.nav-header
     Contactos
-  %br
   - if @current_user
     %a.btn.btn-mini.corner(href = new_contact_path data-toggle="tooltip-add-contact" title="Añadir contacto")
       %i.icon-plus
