@@ -1,6 +1,6 @@
 .control-group
 	#content_title.well
-		= text_field :task, :name, :required => true, class: 'input-title input-block-level', placeholder: 'Nueva tarea'
+		= text_field :task, :name, :required => true, class: 'input-title input-block-level', placeholder: 'Nueva tarea', :autofocus => true
 	- unless @task.errors.empty?
 		#warning.alert.alert-error
 			Se han producido los siguientes errores:

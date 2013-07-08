@@ -22,6 +22,7 @@
 						%i.icon-question-sign
 	- else
 		Ninguno
+		
 - if @task.contacts && (@current_user.owns_task? @task)
 	¡Dales un hueso a quienes te ayudan!
 	= link_to :controller => 'tasks', :action => 'give_bones_with_list', :id => @task.id do

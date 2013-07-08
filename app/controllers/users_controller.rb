@@ -1,4 +1,4 @@
-class SessionsController < ApplicationController
+class UsersController < ApplicationController
 	skip_before_filter :set_current_user
 
 	def index
@@ -6,17 +6,13 @@ class SessionsController < ApplicationController
 
 	def create
 		auth = request.env["omniauth.auth"]
-		if auth.error
-			flash[:warning] = "Error de acceso: " + params[:message]
-			redirect_to '/index' and return
-		end
 		user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth)
 		session[:user_id] = user.id
 		redirect_to tasks_path and return
 	end
 
 	def failure
-		flash[:warning] = "Error de acceso: " + params[:message]
+		flash[:warning] = "Error de acceso: " + params[:error]
 		redirect_to '/index' and return
 	end
 

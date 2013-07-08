@@ -111,7 +111,12 @@ class TasksController < ApplicationController
 
   def invite
     @task = Task.find_by_id params[:id]
-    access_denied and return unless @current_user.owns_task? @task
+    access_denied and return unless @current_user
+    unless @current_user.owns_task?(@task)
+      access_denied
+      flash[:warning] = "Sólo puede invitar el creador/a de la tarea, #{@task.user.name_for @current_user}"
+      return
+    end
     @contact = Contact.find_by_id params[:contact]
     @user = @contact.referenced_user
     if !@user
@@ -121,13 +126,16 @@ class TasksController < ApplicationController
     elsif @user.is_invited_to_task? @task
       flash[:warning] = "#{@contact.name} ya estaba invitado/a a #{@task.name}"
     else
-      @referenced_contact = @user.contacts.find_by_referenced_user_id(@current_user.id)
-      @task.contacts << @contact
-      @task.save
-      @task.mark_as_pending_for @user
-      @referenced_contact.updated = true
-      @referenced_contact.save
-      flash[:notice] = "#{@contact.name} invitado/a a #{@task.name}"
+      if @referenced_contact = @user.contacts.find_by_referenced_user_id(@current_user.id)
+        @task.contacts << @contact
+        @task.save
+        @task.mark_as_pending_for @user
+        @referenced_contact.updated = true
+        @referenced_contact.save
+        flash[:notice] = "#{@contact.name} invitado/a a #{@task.name}"
+      else
+        flash[:warning] = "No puedes invitarle hasta que te agregue como contacto"
+      end
     end
     render :nothing => true and return if request.xhr?
     redirect_to :back

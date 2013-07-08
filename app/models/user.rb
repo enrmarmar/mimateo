@@ -84,6 +84,11 @@ class User < ActiveRecord::Base
   	self.referenced_contacts.find_by_user_id user.id
   end
 
+  def name_for user
+    return nil unless contact = self.user_as_contact_for(user)
+    contact.name
+  end
+
   def existing_notification notification
     if notification.contact
       self.notifications.where(:action => notification.action, :task_id => notification.task.id, :contact_id => notification.contact.id).first
