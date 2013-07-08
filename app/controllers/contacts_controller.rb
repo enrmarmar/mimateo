@@ -12,7 +12,7 @@ class ContactsController < ApplicationController
       @bones_given_to_contact = @current_user.given_bones.where(:taker_id => @user.id).sum(:amount)
       @bones_taken_from_contact = @current_user.taken_bones.where(:giver_id => @user.id).sum(:amount)
     end
-    # @notifications = @current_user.notifications.where(:contact_id => @contact)
+    @pendingTasks = @current_user.pending_invited_tasks.where(user_id: @contact.referenced_user.id)
   end
 
   def create

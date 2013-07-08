@@ -41,3 +41,11 @@
 			= link_to :controller => :tasks, :id => @task, :action => :refuse, :confirm => '¿Estás seguro?' do
 				%button#refuse-task.btn.btn-mini(data-toggle="tooltip-delete-task" title="Dejar de seguir la tarea")
 					%i.icon-remove
+
+- if @current_user.has_google_account? && @task.completed != true
+	.row-fluid
+		.span6.offset6
+			- if @task.syncronized_with_Google_Calendar_for? @current_user
+				= link_to "Dejar de sincronizar tarea con calendario de Google", {:controller => :google_events, :action => :delete, :task_id => @task.id}, class: 'btn pull-right'
+			- else
+				= link_to "Sincronizar tarea con calendario de Google", {:controller => :google_events, :action => :create, :task_id => @task.id}, class: 'btn pull-right'

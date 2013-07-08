@@ -1,6 +1,5 @@
 class User < ActiveRecord::Base
-	validates :name, :presence=>true
-	validates :email, :presence=>true, :uniqueness=>true
+	validates :email, :uniqueness=>true
 	validates :email, :format => { :with => /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/, :message => ": Direccion email incorrecta" }
   
 	has_many :tasks, :dependent => :delete_all
@@ -10,12 +9,17 @@ class User < ActiveRecord::Base
   has_many :notifications, :dependent => :delete_all
   has_many :given_bones, class_name: 'Bone', foreign_key: 'giver_id'
   has_many :taken_bones, class_name: 'Bone', foreign_key: 'taker_id'
+  has_many :google_events, :dependent => :delete_all
 
   before_save do
     self.active_tasks.each do |task|
       unless task.pending_for? self
         task.update_notify_date_for self
       end
+    end
+    Contact.where(:email => self.email).each do |contact|
+      contact.referenced_user_id = self.id
+      contact.save
     end
   end
 
@@ -26,11 +30,6 @@ class User < ActiveRecord::Base
 			:name => auth['info']['name'],
 			:email => auth['info']['email']
 			)
-    
-    Contact.where(:email => user.email).each do |contact|
-      contact.referenced_user_id = user.id
-      contact.save
-    end
 	end
 
 	def self.authenticate login
@@ -40,6 +39,10 @@ class User < ActiveRecord::Base
 			end
 		end
 	end
+
+  def has_google_account?
+    true unless self.uid == nil
+  end
 
 	def owns_task? (task)
 		task.user_id == self.id
@@ -63,11 +66,11 @@ class User < ActiveRecord::Base
     self.tasks + self.active_invited_tasks.to_a
   end
 
-  #TODO: perhaps find another query to avoid uniq! for performance reasons?
   def pending_invited_tasks
-  	self.invited_tasks.joins(:invites).where('invites.pending = ?', true).uniq!
+  	self.invited_tasks.joins(:invites).where('invites.pending = ?', true)
   end
 
+  #TODO: perhaps find another query to avoid uniq! for performance reasons?
   def active_invited_tasks
     self.invited_tasks.joins(:invites).where('invites.pending != ? OR invites.pending IS NULL', true).uniq!
   end

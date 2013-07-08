@@ -44,7 +44,7 @@ class TasksController < ApplicationController
     @task = Task.find_by_id params[:id]
     access_denied and return unless @current_user.owns_task? @task
     if @task.update_attributes params[:task]
-      self.notify_updated
+      @task.notify_updated
       flash[:notice] = "Se ha actualizado la tarea #{@task.name}."
       redirect_to task_path @task
     else
@@ -64,11 +64,7 @@ class TasksController < ApplicationController
   def complete
     @task = Task.find_by_id params[:id]
     access_denied and return unless @current_user.owns_task? @task
-    @task.completed = true
-    @task.save
-    @task.mark_as_updated
-    @task.notify_completed
-    @task.clear_notify_date
+    @task.mark_as_completed
     flash[:notice] = "La tarea #{@task.name} se ha marcado como completada."
     render :nothing => true and return if request.xhr?
     redirect_to task_path @task

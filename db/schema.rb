@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130701213041) do
+ActiveRecord::Schema.define(:version => 20130708180646) do
 
   create_table "bones", :force => true do |t|
     t.integer  "giver_id"
@@ -32,6 +32,14 @@ ActiveRecord::Schema.define(:version => 20130701213041) do
     t.datetime "updated_at"
     t.boolean  "updated"
     t.boolean  "pending"
+  end
+
+  create_table "google_events", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "task_id"
+    t.string   "google_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "invites", :force => true do |t|
@@ -85,6 +93,9 @@ ActiveRecord::Schema.define(:version => 20130701213041) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "last_logged_in"
+    t.string   "token"
+    t.string   "refresh_token"
+    t.datetime "token_expires_at"
   end
 
 end

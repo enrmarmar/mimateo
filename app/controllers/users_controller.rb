@@ -1,4 +1,8 @@
 class UsersController < ApplicationController
+	require 'google/api_client'
+  require 'client_builder'
+
+
 	skip_before_filter :set_current_user
 
 	def index
@@ -8,11 +12,19 @@ class UsersController < ApplicationController
 		auth = request.env["omniauth.auth"]
 		user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth)
 		session[:user_id] = user.id
+
+		user.token = auth[:credentials][:token]
+    user.token_expires_at = Time.at(auth[:credentials][:expires_at])
+    user.refresh_token = auth[:credentials][:refresh_token]
+    user.save
+
 		redirect_to tasks_path and return
 	end
 
 	def failure
-		flash[:warning] = "Error de acceso: " + params[:error]
+		flash[:warning] = "Error de acceso"
+		flash[:warning] = params[:message] if params[:message] 
+		flash[:warning] = params[:error] if params[:error] 
 		redirect_to '/index' and return
 	end
 

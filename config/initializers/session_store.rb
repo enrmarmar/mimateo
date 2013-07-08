@@ -1,8 +1,8 @@
 # Be sure to restart your server when you modify this file.
 
-MiMateo::Application.config.session_store :cookie_store, key: '_prueba1_session'
+MiMateo::Application.config.session_store :cookie_store, key: '_MiMateo_session'
 
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information
 # (create the session table with "rails generate session_migration")
-# Prueba1::Application.config.session_store :active_record_store
+# MiMateo::Application.config.session_store :active_record_store

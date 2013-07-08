@@ -12,6 +12,7 @@ MiMateo::Application.routes.draw do
   match 'task/:id/:action/:contact' => 'tasks#:action'
   match 'notifications/:id/destroy' => 'notifications#destroy'
   match 'task/:id/give/:amount/bones_to/:contact' => 'bones#give'
+  match 'google_event/:task_id/:action' => 'google_events#:action'
 
   match 'login_as_1' => 'users#login_as_1'
   match 'login_as_2' => 'users#login_as_2'
@@ -19,7 +20,7 @@ MiMateo::Application.routes.draw do
   match 'login_as_4' => 'users#login_as_4'
 
   match 'auth/:provider' => 'users#create', :as => 'login'
-  match 'auth/:provider/callback' => 'users#create'
+  match 'auth/:provider/callback' => 'users#create', :as => 'callback'
   match 'auth/failure' => 'users#failure'
   match 'logout' => 'users#destroy'
 

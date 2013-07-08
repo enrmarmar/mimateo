@@ -8,6 +8,7 @@ class Task < ActiveRecord::Base
 	has_many :contacts, :through => :invites, :uniq => true
 	has_many :messages, :dependent => :delete_all
 	has_many :notifications, :dependent => :delete_all
+	has_many :google_events
 
 	before_save do
 		self.updated = true
@@ -17,6 +18,13 @@ class Task < ActiveRecord::Base
     self.notifications.each do |notification|
       notification.save
     end
+    self.google_events.each do |google_event|
+    	google_event.save
+    end
+	end
+
+	before_destroy do
+		self.google_events.destroy_all
 	end
 
 	#TODO When in the same week for example return 'friday' instead of date
@@ -68,6 +76,10 @@ class Task < ActiveRecord::Base
 		user.is_invited_to_task?(self) && self.invites.find_by_contact_id(user.user_as_contact_for self.user).pending
 	end
 
+	def syncronized_with_Google_Calendar_for? user
+		GoogleEvent.find_by_user_id_and_task_id user.id, self.id
+	end
+
 	def mark_as_read_for user
 		if user.owns_task? self
 			self.updated = false
@@ -104,6 +116,15 @@ class Task < ActiveRecord::Base
 		invite = self.invites.find_by_contact_id contact
 		invite.pending = true
 		invite.save
+	end
+
+	def mark_as_completed
+		self.completed = true
+    self.save
+    self.mark_as_updated
+    self.notify_completed
+    self.clear_notify_date
+    self.google_events.destroy_all
 	end
 
 	def unmark_as_pending_for user
