@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
         task.update_notify_date_for self
       end
     end
-    Contact.where(:email => self.email).each do |contact|
+    self.contacts.each do |contact|
       contact.referenced_user_id = self.id
       contact.save
     end
@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
     true unless self.uid == nil
   end
 
-	def owns_task? (task)
+	def owns_task? task
 		task.user_id == self.id
 	end
 
@@ -94,9 +94,14 @@ class User < ActiveRecord::Base
 
   def existing_notification notification
     if notification.contact
-      self.notifications.where(:action => notification.action, :task_id => notification.task.id, :contact_id => notification.contact.id).first
+      self.notifications.where(
+        :action => notification.action,
+        :task_id => notification.task.id,
+        :contact_id => notification.contact.id).first
     else
-      self.notifications.where(:action => notification.action, :task_id => notification.task.id).first
+      self.notifications.where(
+        :action => notification.action,
+        :task_id => notification.task.id).first
     end  
   end
 end
