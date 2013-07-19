@@ -10,7 +10,7 @@ class Contact < ActiveRecord::Base
   validates :name, :presence=>true
   validates :email, :presence=>true
   validates :email,
-  :format => { :with => /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/, :message => ": direccion email incorrecta" }
+  :format => { :with => /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/, :message => ": dirección email incorrecta" }
   validate :unique_name?
   validate :unique_email?
   validate :not_himself?

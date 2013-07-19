@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 	require 'google/api_client'
-  require 'client_builder'
+  	require 'client_builder'
 
 
 	skip_before_filter :set_current_user
@@ -14,9 +14,9 @@ class UsersController < ApplicationController
 		session[:user_id] = user.id
 
 		user.token = auth[:credentials][:token]
-    user.token_expires_at = Time.at(auth[:credentials][:expires_at])
-    user.refresh_token = auth[:credentials][:refresh_token]
-    user.save
+	    user.token_expires_at = Time.at(auth[:credentials][:expires_at])
+	    user.refresh_token = auth[:credentials][:refresh_token]
+	    user.save
 
 		redirect_to tasks_path and return
 	end

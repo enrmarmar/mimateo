@@ -26,7 +26,7 @@ MiMateo::Application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      match 'index' => 'tasks#index'
+      match 'tasks' => 'tasks#tasks'
     end
   end
 end

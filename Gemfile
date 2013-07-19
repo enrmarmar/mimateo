@@ -4,10 +4,11 @@ gem 'rails', '3.1.0'
 
 gem 'haml'
 
-gem 'omniauth-twitter'
+# Google
 gem "omniauth-google-oauth2"
 gem 'google-api-client'
 
+# assets
 gem 'therubyracer'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
@@ -15,6 +16,7 @@ gem 'less-rails'
 gem 'less-rails-bootstrap'
 gem "font-awesome-rails"
 
+# JSON server
 gem 'rabl'
 gem 'oj'
 
@@ -33,7 +35,7 @@ end
 
 group :development, :test do
   gem 'sqlite3'
-  gem 'ruby-debug19'
+  gem 'ruby-debug19' # remove when upgrading to Ruby 2.0d
 end
 
 group :production do

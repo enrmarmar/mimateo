@@ -8,7 +8,7 @@ class Task < ActiveRecord::Base
 	has_many :contacts, :through => :invites, :uniq => true
 	has_many :messages, :dependent => :delete_all
 	has_many :notifications, :dependent => :delete_all
-	has_many :google_events
+	has_one :google_events, :dependent => :delete
 
 	before_save do
 		self.updated = true

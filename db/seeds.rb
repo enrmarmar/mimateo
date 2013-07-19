@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
@@ -9,7 +11,7 @@
 # Test users
 ana = User.create(name: 'Ana', email: 'ana@prueba.es')
 pedro = User.create(name: 'Pedro', email: 'pedro@prueba.es')
-ramon = User.create(name: 'Ramon', email: 'ramon@prueba.es')
+ramon = User.create(name: 'Ramón', email: 'ramon@prueba.es')
 isabel = User.create(name: 'Isabel', email: 'isabel@prueba.es')
 
 #Test contacts
@@ -29,8 +31,8 @@ i_r = Contact.create(name: isabel.name, email: isabel.email, referenced_user_id:
 #Test tasks
 t1 = Task.create(name: 'Comprar detergente', user_id: ana.id)
 t2 = Task.create(name: 'Pasar la aspiradora', user_id: ana.id)
-t3 = Task.create(name: 'Estudiar frances', user_id: ana.id)
-t4 = Task.create(name: 'Podar el jardin', user_id: pedro.id)
+t3 = Task.create(name: 'Estudiar ruso', user_id: ana.id)
+t4 = Task.create(name: 'Podar el jardín', user_id: pedro.id)
 t5 = Task.create(name: 'Llevar coche al taller', user_id: pedro.id)
 t6 = Task.create(name: 'Vacunar al perro', user_id: ramon.id)
 
@@ -48,4 +50,4 @@ Invite.create(task_id: t6.id, contact_id: p_r.id)
 Message.create(task_id: t1.id, user_id: ana.id, text: 'A ver si alguien me ayuda a comprar detergente')
 Message.create(task_id: t1.id, user_id: pedro.id, text: 'Tienen una oferta muy buena en el Carrefour')
 Message.create(task_id: t1.id, user_id: ramon.id, text: 'Yo le tengo fobia a los supermercados, no cuentes conmigo')
-Message.create(task_id: t1.id, user_id: isabel.id, text: 'A mi me sobra una caja de una oferta 3x2, a lo mejor te sirve...')
+Message.create(task_id: t1.id, user_id: isabel.id, text: 'A mí me sobra una caja de una oferta 3x2, a lo mejor te sirve...')
