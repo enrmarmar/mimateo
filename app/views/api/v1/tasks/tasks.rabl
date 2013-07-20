@@ -3,5 +3,5 @@ child @current_user do
 end
 
 child @tasks do
-	attributes :id, :name, :description, :user_id, :deadline
+	attributes :id, :name, :description, :user_id, :deadline, :completed
 end
