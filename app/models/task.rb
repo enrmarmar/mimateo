@@ -8,19 +8,17 @@ class Task < ActiveRecord::Base
 	has_many :contacts, :through => :invites, :uniq => true
 	has_many :messages, :dependent => :delete_all
 	has_many :notifications, :dependent => :delete_all
-	has_one :google_events, :dependent => :delete
+	has_one :google_event, :dependent => :delete
 
 	before_save do
 		self.updated = true
 	end
 
 	after_save do
-    self.notifications.each do |notification|
-      notification.save
-    end
-    self.google_events.each do |google_event|
-    	google_event.save
-    end
+	    self.notifications.each do |notification|
+	      notification.save
+	    end
+	    self.google_event.save if self.google_event 
 	end
 
 	before_destroy do
