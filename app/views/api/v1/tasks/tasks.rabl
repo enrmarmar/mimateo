@@ -1,2 +1,2 @@
 collection @tasks
-attributes :name, :deadline
+attributes :id, :name, :description, :user_id, :deadline
