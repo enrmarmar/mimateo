@@ -1,2 +1,7 @@
-collection @tasks
-attributes :id, :name, :description, :user_id, :deadline
+child @current_user do
+	attributes :id
+end
+
+child @tasks do
+	attributes :id, :name, :description, :user_id, :deadline
+end
