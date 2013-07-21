@@ -21,10 +21,6 @@ class Task < ActiveRecord::Base
 	    self.google_event.save if self.google_event 
 	end
 
-	before_destroy do
-		self.google_events.destroy_all
-	end
-
 	#TODO When in the same week for example return 'friday' instead of date
 	def deadline_as_words
 		today = Time.now.localtime.to_date
@@ -122,7 +118,7 @@ class Task < ActiveRecord::Base
     self.mark_as_updated
     self.notify_completed
     self.clear_notify_date
-    self.google_events.destroy_all
+    self.google_event.destroy if self.google_event
 	end
 
 	def unmark_as_pending_for user
