@@ -42,7 +42,7 @@ class Api::V1::TasksController < Api::V1::BaseController
 
   def complete
     if @current_user
-      @task = Task.find_by_id params[:task][:id]
+      @task = Task.find_by_id params[:id]
       @status.error = "Acceso denegado" and return unless @current_user.owns_task? @task
       @task.mark_as_completed
       @status.info = "La tarea #{@task.name} se ha marcado como completada."
@@ -51,7 +51,7 @@ class Api::V1::TasksController < Api::V1::BaseController
 
   def postpone
     if @current_user
-      @task = Task.find_by_id params[:task][:id]
+      @task = Task.find_by_id params[:id]
       @status.error = "Acceso denegado" and return unless @current_user.owns_task? @task
       @task.deadline = Time.now.localtime.to_date + 1
       @task.save
