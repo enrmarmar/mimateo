@@ -27,6 +27,7 @@ MiMateo::Application.routes.draw do
   namespace :api do
     namespace :v1 do
       match 'tasks' => 'tasks#tasks'
+      match 'task/create' => 'tasks#create'
     end
   end
 end

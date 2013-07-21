@@ -206,7 +206,9 @@ class Task < ActiveRecord::Base
 	# Custom validator
 
   def name_not_too_long?
-    errors.add(:base, "Nombre demasiado largo, máximo 30 caracteres") if self.name.length > 30
+  	if self.name
+    	errors.add(:base, "Nombre demasiado largo, máximo 30 caracteres") if self.name.length > 30
+  	end
   end
 
 end
