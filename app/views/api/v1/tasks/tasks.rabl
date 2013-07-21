@@ -6,6 +6,6 @@ child @tasks do
 	attributes :id, :name, :description, :user_id, :deadline, :completed
 end
 
-child @error => :error do
-	attributes :message
+child @status => :status do
+	attributes :error, :info
 end

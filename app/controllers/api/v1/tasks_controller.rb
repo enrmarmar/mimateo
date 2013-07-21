@@ -10,9 +10,9 @@ class Api::V1::TasksController < Api::V1::BaseController
   		@task = Task.new params[:task]
 	    @task.user_id = @current_user.id
 	    if @task.save
-	    	@error.message = "Se ha creado la tarea #{@task.name}."
+	    	@status.info = "Se ha creado la tarea #{@task.name}."
 	    else
-	   		@error.message = "Se ha producido un error al crear la tarea #{@task.name}."
+	   		@status.error = "Se ha producido un error al crear la tarea #{@task.name}."
 	    end
 		end
   end
