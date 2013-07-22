@@ -30,6 +30,7 @@ class User < ActiveRecord::Base
 			:name => auth['info']['name'],
 			:email => auth['info']['email']
 			)
+    UserMailer.welcome_email(user).deliver
 	end
 
 	def self.authenticate login
