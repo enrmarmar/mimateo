@@ -20,15 +20,14 @@ class ContactsController < ApplicationController
   	@contact = Contact.new(params[:contact])
   	@contact.user = @current_user
     if @contact.save
-      # Create a pending contact for the referenced user
+      # Create a pending contact for the referenced user unless already a contact
       if User.find_by_email(@contact.email)
         unless @contact.referenced_user.user_as_contact_for(@current_user)
-          @referenced_contact = Contact.new
-          @referenced_contact.user = @contact.referenced_user
-          @referenced_contact.name = @current_user.name
-          @referenced_contact.email = @current_user.email
-          @referenced_contact.pending = true
-          @referenced_contact.save
+          @referenced_contact = Contact.create!(
+            :user => @contact.referenced_user,
+            :name => @current_user.name, 
+            :email => @current_user.email, 
+            :pending => true)
         end
       end
   	  flash[:notice] = "Se ha creado el contacto #{@contact.name}."

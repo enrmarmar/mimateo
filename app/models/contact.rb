@@ -39,7 +39,9 @@ class Contact < ActiveRecord::Base
       end
       # We delete notifications both ways
       self.user.notifications.where(:contact_id => self.id).destroy_all
-      affected_user.notifications.where(:contact_id => self.user.user_as_contact_for(affected_user).id).destroy_all
+      if affected_contact = self.user.user_as_contact_for(affected_user)
+        affected_user.notifications.where(:contact_id => affected_contact.id).destroy_all
+      end
       self.notify_deleted
     end
   end
