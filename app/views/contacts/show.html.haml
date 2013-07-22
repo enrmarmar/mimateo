@@ -35,3 +35,20 @@
 #tasks_drop_box.alert-error
   %i.icon-trash
   Suelta aquí un usuario para dejar de invitarlo a la tarea
+
+%strong Huesos recibidos de #{@contact.name}
+%ul#bones-taken
+  - if @number_of_bones_taken_from_contact > 0
+    - @bones_taken_from_contact.each do |bone|
+      %li(data-toggle="tooltip-bone-taken" title="Hueso/s recibido/s: #{bone.updated_at}")
+        #{bone.amount} hueso/s por #{bone.task_name}
+  - else
+    Ninguno
+%strong Huesos dados a #{@contact.name}
+%ul#bones-given
+  - if @number_of_bones_given_to_contact > 0
+    - @bones_given_to_contact.each do |bone|
+      %li(data-toggle="tooltip-bone-taken" title="Hueso/s dado/s: #{bone.updated_at}")
+        #{bone.amount} hueso/s por #{bone.task_name}
+  - else
+    Ninguno
