@@ -11,12 +11,12 @@ class Message < ActiveRecord::Base
 
   def notify_unread_for user
     unless user == self.user
-      notification = Notification.new
-      notification.action = 'unread_message'
-      notification.user = user
-      notification.task = self.task
-      notification.task_name = self.task.name
-      notification.amount = 1
+      notification = Notification.new(
+        :action => 'unread_message',
+        :user => user,
+        :task => self.task,
+        :task_name => self.task.name,
+        :amount => 1)
       unless existing_notification = user.existing_notification(notification)
         notification.save
       else

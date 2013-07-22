@@ -8,18 +8,18 @@ class Bone < ActiveRecord::Base
   end
 
   def notify_sent
-    notification = Notification.new
-    notification.action = 'sent_bone'
-    notification.user = self.taker
-    notification.contact = self.giver.user_as_contact_for self.taker
-    notification.task = self.task
-    notification.task_name = self.task_name
-    notification.amount = self.amount
-    unless existing_notification = taker.existing_notification(notification)
-      notification.save
-    else
+    notification = Notification.new(
+        :action => 'sent_bone',
+        :user => self.taker,
+        :contact => self.giver.user_as_contact_for(self.taker),
+        :task => self.task,
+        :task_name => self.task_name,
+        :amount => self.amount)
+    if existing_notification = taker.existing_notification(notification)
       existing_notification.amount = self.amount
       existing_notification.save
+    else
+      notification.save
     end
   end
 end

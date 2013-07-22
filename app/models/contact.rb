@@ -10,7 +10,8 @@ class Contact < ActiveRecord::Base
   validates :name, :presence=>true
   validates :email, :presence=>true
   validates :email,
-  :format => { :with => /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/, :message => ": dirección email incorrecta" }
+  :format => { :with => /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/,
+    :message => ": dirección email incorrecta" }
   validate :unique_name?
   validate :unique_email?
   validate :not_himself?
@@ -38,9 +39,11 @@ class Contact < ActiveRecord::Base
         task.destroy_invitation_for affected_user
       end
       # We delete notifications both ways
-      self.user.notifications.where(:contact_id => self.id).destroy_all
+      self.user.notifications.where(
+        :contact_id => self.id).destroy_all
       if affected_contact = self.user.user_as_contact_for(affected_user)
-        affected_user.notifications.where(:contact_id => affected_contact.id).destroy_all
+        affected_user.notifications.where(
+          :contact_id => affected_contact.id).destroy_all
       end
       self.notify_deleted
     end
@@ -52,13 +55,14 @@ class Contact < ActiveRecord::Base
   end
 
 	def notify_deleted
-		notification = Notification.new
-    notification.action = 'deleted_contact'
-    notification.user = self.referenced_user
-    referenced_contact = self.referenced_user.contacts.find_by_referenced_user_id self.user.id
-    notification.contact = referenced_contact
-    notification.save if referenced_contact
     # in case A deletes contact B and, in revenge, B deletes contact A... A shouldn't get an empty notification 
+    if referenced_contact = self.referenced_user.contacts
+      .find_by_referenced_user_id(self.user.id)
+		notification = Notification.create!(
+      :action => 'deleted_contact',
+      :user => self.referenced_user,
+      :contact => referenced_contact)
+    end
 	end
 
   # Custom validators

@@ -138,42 +138,42 @@ class Task < ActiveRecord::Base
 	end
 
 	def notify_refused_by user
-		notification = Notification.new
-		notification.action = 'refused_task'
-		notification.user = self.user
-		notification.contact = user.user_as_contact_for self.user
-		notification.task = self
-		notification.save
+		notification = Notification.create!(
+			:action => 'refused_task',
+			:user => self.user,
+			:contact => user.user_as_contact_for(self.user),
+			:task => self)
 	end
 
 	def notify_accepted_by user
-		notification = Notification.new
-		notification.action = 'accepted_task'
-		notification.user = self.user
-		notification.contact = user.user_as_contact_for self.user
-		notification.task = self
-		notification.save
+		notification = Notification.create!(
+			:action => 'accepted_task',
+			:user => self.user,
+			:contact => user.user_as_contact_for(self.user),
+			:task => self)
 	end
 
 	def update_notify_date_for user
-		previous_notify_ends_today = user.notifications.where(:task_id => self.id, :action => 'ends_today_task').first
-		previous_notify_deadline_missed = user.notifications.where(:task_id => self.id, :action => 'deadline_missed_task').first
+		previous_notify_ends_today = user.notifications.where(
+			:task_id => self.id,
+			:action => 'ends_today_task').first
+		previous_notify_deadline_missed = user.notifications.where(
+			:task_id => self.id,
+			:action => 'deadline_missed_task').first
 		if self.ends_today?
 			unless previous_notify_ends_today
-				notification = Notification.new
-	      notification.action = 'ends_today_task'
-	      notification.user = user
-	      notification.task = self
-	      notification.save
+				notification = Notification.create!(
+	      	:action => 'ends_today_task',
+	      	:user => user,
+	      	:task => self)
 	    end
 	  elsif self.deadline_missed?
 	  	previous_notify_ends_today.destroy if previous_notify_ends_today
 	  	unless previous_notify_deadline_missed
-	  		notification = Notification.new
-	      notification.action = 'deadline_missed_task'
-	      notification.user = user
-	      notification.task = self
-	      notification.save
+	  		notification = Notification.create!(
+	      	:action => 'deadline_missed_task',
+	      	:user => user,
+	      	:task => self)
 	  	end
     end
 	end
@@ -187,12 +187,11 @@ class Task < ActiveRecord::Base
 		define_method "notify_#{action}" do
 			self.contacts.each do |contact|
 				unless self.pending_for? contact.referenced_user
-					notification = Notification.new
-		      notification.action = action + '_task'
-		      notification.user = contact.referenced_user
-		      notification.contact = self.user.user_as_contact_for contact.referenced_user
-		      notification.task = self
-		      notification.save
+					notification = Notification.create!(
+		      :action => action + '_task',
+		      :user => contact.referenced_user,
+		      :contact => self.user.user_as_contact_for(contact.referenced_user),
+		      :task => self)
 		    end
 			end
 		end
