@@ -31,7 +31,8 @@ class User < ActiveRecord::Base
 			:email => auth['info']['email']
 			)
     UserMailer.welcome_email(user).deliver
-	end
+    user
+  end
 
 	def self.authenticate login
 		if user = User.find_by_email(login[:email])
