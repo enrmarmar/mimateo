@@ -43,6 +43,11 @@ group :production do
   gem 'pg' # use PostgreSQL in production (Heroku)
 end
 
+group :development do
+  gem 'disable_assets_logger'
+  gem 'pry-rails'
+end
+
 group :test do
   gem 'cucumber-rails'
   gem 'cucumber-rails-training-wheels' # some pre-fabbed step definitions  
@@ -50,5 +55,3 @@ group :test do
   gem 'capybara', "~> 2.0.3"           # lets Cucumber pretend to be a web browser
   gem 'launchy'                        # a useful debugging aid for user stories
 end
-
-gem 'disable_assets_logger', :group => :development

@@ -18,7 +18,7 @@ class Contact < ActiveRecord::Base
   validate :name_not_too_long?
 
   before_save do
-    self.emailed = not(self.user.receive_emails)
+    self.emailed = not(self.user.receive_emails) if self.user
 		if referenced_user = User.find_by_email(self.email)
 			self.referenced_user = referenced_user
 		end
