@@ -9,4 +9,15 @@ class Notification < ActiveRecord::Base
     self.emailed = not(self.user.receive_emails)
     true
   end
+
+  after_destroy do
+  	unless self.user.updates_for_task? self.task
+  		self.task.updated = false
+  		self.task.save
+  	end
+  	unless self.user.updates_for_contact? self.contact 
+  		self.contact.updated = false
+  		self.contact.save
+  	end
+  end
 end

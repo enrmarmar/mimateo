@@ -110,6 +110,15 @@ class User < ActiveRecord::Base
     contact.name
   end
 
+  def updates_for_task? task
+    not(task.notifications.where(user_id: self.id).empty?)
+  end
+
+  def updates_for_contact? contact
+    not(contact.notifications.where(user_id: self.id).empty?) ||
+    not(self.pending_invited_tasks_from(contact.referenced_user).empty?)
+  end
+
   def existing_notification notification
     if notification.contact
       self.notifications.where(
