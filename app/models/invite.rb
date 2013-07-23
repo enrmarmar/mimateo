@@ -1,10 +1,13 @@
 class Invite < ActiveRecord::Base
 	belongs_to :contact
 	belongs_to :task
+  belongs_to :user
 
 	before_create do
-		self.pending = true
-	end
+    self.user = self.contact.referenced_user
+		self.pending = true   
+    true
+  end
 
   before_save do
     self.unread = false

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130723020029) do
+ActiveRecord::Schema.define(:version => 20130723173602) do
 
   create_table "bones", :force => true do |t|
     t.integer  "giver_id"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(:version => 20130723020029) do
     t.boolean  "updated"
     t.boolean  "unread"
     t.boolean  "pending"
+    t.integer  "user_id"
   end
 
   create_table "messages", :force => true do |t|

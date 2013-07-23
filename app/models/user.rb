@@ -5,7 +5,8 @@ class User < ActiveRecord::Base
 	has_many :tasks, :dependent => :delete_all
 	has_many :contacts, :dependent => :delete_all
 	has_many :referenced_contacts, :class_name => "Contact", :foreign_key => "referenced_user_id"
-	has_many :messages
+	has_many :invites
+  has_many :messages
   has_many :notifications, :dependent => :delete_all
   has_many :given_bones, class_name: 'Bone', foreign_key: 'giver_id'
   has_many :taken_bones, class_name: 'Bone', foreign_key: 'taker_id'
@@ -80,6 +81,11 @@ class User < ActiveRecord::Base
 
   def pending_invited_tasks
     self.invited_tasks.joins(:invites).where('invites.pending = ?', true).uniq
+  end
+
+  def pending_invited_tasks_from user
+    referenced_contact = self.user_as_contact_for user
+    self.invited_tasks.joins(:invites).where('invites.pending = ? AND invites.contact_id = ?', true, referenced_contact).uniq
   end
 
   def active_invited_tasks

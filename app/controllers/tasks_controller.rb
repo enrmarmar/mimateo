@@ -167,6 +167,9 @@ class TasksController < ApplicationController
     access_denied and return unless @current_user.is_invited_to_task? @task
     @task.destroy_invitation_for @current_user
     @task.updated = true
+    @referenced_contact = @current_user.user_as_contact_for @task.user
+    @referenced_contact.updated = true
+    @referenced_contact.save
     flash[:notice] = "Se ha rechazado la tarea #{@task.name}"
     render :nothing => true and return if request.xhr?
     redirect_to tasks_path
