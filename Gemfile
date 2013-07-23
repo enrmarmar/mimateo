@@ -41,6 +41,7 @@ end
 
 group :production do
   gem 'pg' # use PostgreSQL in production (Heroku)
+  gem 'pry-rails'
 end
 
 group :development do
