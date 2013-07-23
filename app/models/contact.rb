@@ -33,12 +33,15 @@ class Contact < ActiveRecord::Base
 
   before_create do
     self.pending = true
+    true
   end
 
   after_create do
-    self.referenced_user.notifications.where(
-      :action => 'deleted_contact',
-      :contact_id => self.id).destroy_all
+    if self.referenced_user
+      self.referenced_user.notifications.where(
+        :action => 'deleted_contact',
+        :contact_id => self.id).destroy_all
+    end
   end
 
   after_destroy do
