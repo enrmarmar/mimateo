@@ -79,12 +79,12 @@ class User < ActiveRecord::Base
   end
 
   def pending_invited_tasks
-  	self.invited_tasks.joins(:invites).where('invites.pending = ?', true).uniq!
+    self.invited_tasks.joins(:invites).where('invites.pending = ?', true).uniq
   end
 
   def active_invited_tasks
-    #TODO Figure out why do I need uniq! here
-    self.invited_tasks.joins(:invites).where('invites.pending = ?', false).uniq!
+    #TODO Figure out why do I need uniq here
+    self.invited_tasks.joins(:invites).where('invites.pending = ?', false).uniq
   end
 
   def pending_contacts
