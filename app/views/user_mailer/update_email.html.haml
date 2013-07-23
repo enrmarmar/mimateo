@@ -1,0 +1,67 @@
+!!!5
+
+%html
+  %head
+    %meta(content='text/html; charset=UTF-8' http-equiv='Content-Type')
+  %body
+    %h1
+      ¡Saludos #{@user.name}!
+    %p
+      Deseamos informarte que tienes las siguientes actualizaciones en Mi Mateo:
+    %ul#notifications
+      #pendingContacts
+        - if @pendingContacts
+          - @pendingContacts.each do |contact|
+            %li #{contact.name} te ha agregado como contacto
+
+      #pendingTasks
+        - if @pendingTasks
+          - @pendingTasks.each do |task|
+            %li #{task.user.name} te ha invitado a la tarea #{task.name}
+            
+      #otherNotifications
+        - if @notifications
+          - @notifications.each do |notification|
+            %li
+              - case notification.action
+                - when 'updated_task'
+                  =link_to notification.contact_name, @url + contact_path(notification.contact) 
+                  ha actualizado la tarea 
+                  =link_to notification.task_name, @url + task_path(notification.task) 
+                - when 'deleted_task'
+                  =link_to notification.contact_name, @url + contact_path(notification.contact) 
+                  ha eliminado la tarea #{notification.task_name} 
+                - when 'completed_task'
+                  =link_to notification.contact_name, @url + contact_path(notification.contact)
+                  ha completado la tarea
+                  =link_to notification.task_name, @url + task_path(notification.task) 
+                - when 'unread_message'
+                  Tienes #{notification.amount} mensaje/s sin leer en la tarea
+                  =link_to notification.task_name, @url + task_path(notification.task) 
+                - when 'deleted_contact'
+                  =link_to notification.contact_name, @url + contact_path(notification.contact) 
+                  te ha eliminado como contacto
+                - when 'sent_bone'
+                  =link_to notification.contact_name, @url + contact_path(notification.contact) 
+                  te ha enviado #{notification.amount} hueso/s por
+                  =link_to notification.task_name, @url + task_path(notification.task)
+                - when 'refused_task'
+                  =link_to notification.contact_name, @url + contact_path(notification.contact)
+                  ha rechazado la tarea
+                  =link_to notification.task_name, @url + task_path(notification.task)
+                - when 'accepted_task'
+                  =link_to notification.contact_name, @url + contact_path(notification.contact)
+                  ha aceptado la tarea
+                  =link_to notification.task_name, @url + task_path(notification.task)
+                - when 'ends_today_task'
+                  ¡La tarea
+                  =link_to notification.task_name, @url + task_path(notification.task)
+                  termina hoy!
+                - when 'deadline_missed_task'
+                  ¡Se ha agotado el plazo de la tarea
+                  =link_to notification.task_name, @url + task_path(notification.task)
+                  !
+
+    %p
+      Puedes entrar en Mi Mateo siguiendo este enlace:
+      =@url

@@ -11,7 +11,9 @@ class Task < ActiveRecord::Base
 	has_one :google_event, :dependent => :delete
 
 	before_save do
+		self.emailed = not(self.user.receive_emails)
 		self.updated = true
+		true
 	end
 
 	after_save do

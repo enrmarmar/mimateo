@@ -21,6 +21,13 @@ class User < ActiveRecord::Base
       contact.referenced_user_id = self.id
       contact.save
     end
+
+    #Default user configuration
+    if self.has_google_account?
+      self.receive_emails = true
+      self.auto_synchronize_with_GoogleCalendar = true
+    end
+    true
   end
 
 	def self.create_with_omniauth auth
@@ -72,9 +79,8 @@ class User < ActiveRecord::Base
   	self.invited_tasks.joins(:invites).where('invites.pending = ?', true)
   end
 
-  #TODO: perhaps find another query to avoid uniq! for performance reasons?
   def active_invited_tasks
-    self.invited_tasks.joins(:invites).where('invites.pending != ? OR invites.pending IS NULL', true).uniq!
+    self.invited_tasks.joins(:invites).where('invites.pending = ?', false)
   end
 
   def pending_contacts
@@ -106,4 +112,36 @@ class User < ActiveRecord::Base
         :task_id => notification.task.id).first
     end  
   end
+
+  def unmailed_pending_contacts
+    self.pending_contacts.where(:emailed => false)
+  end
+
+  def unmailed_pending_invited_tasks
+    self.pending_invited_tasks.where(:emailed => false)
+  end
+
+  def unmailed_notifications
+    self.notifications.where(:emailed => false)
+  end
+
+  def unmailed_updates?
+    not(unmailed_pending_contacts.empty?) ||
+    not(unmailed_pending_invited_tasks.empty?) ||
+    not(unmailed_notifications.empty?)
+  end
+
+  def check_updates_as_mailed
+    unmailed_pending_contacts.update_all :emailed => true
+    unmailed_pending_invited_tasks.update_all :emailed => true
+    unmailed_notifications.update_all :emailed => true
+  end
+
+  def mail_updates
+    if self.unmailed_updates?
+      UserMailer.update_email(self).deliver
+      check_updates_as_mailed
+    end
+  end
+
 end

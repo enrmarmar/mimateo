@@ -6,6 +6,7 @@ class Notification < ActiveRecord::Base
   before_save do
     self.task_name = self.task.name if self.task
     self.contact_name = self.contact.name if self.contact
+    self.emailed = not(self.user.receive_emails)
+    true
   end
-
 end

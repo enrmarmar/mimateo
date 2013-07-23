@@ -5,6 +5,7 @@ class Bone < ActiveRecord::Base
   
   before_save do
     self.task_name = self.task.name
+    true
   end
 
   def notify_sent

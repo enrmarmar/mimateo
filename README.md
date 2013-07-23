@@ -19,12 +19,12 @@ Main features:
 - Share tasks with contacts, including notifications and messages
 - Give "bones" (virtual currency) to contacts
 - Syncronize tasks with Google Calendar
+- Email notifications
 
 To Do:
 ------
 
 - Translate to English
-- Email notifications
 
 - - -
 

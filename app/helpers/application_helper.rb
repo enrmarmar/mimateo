@@ -3,11 +3,11 @@ module ApplicationHelper
     render :partial => "/shared/button_close", :locals => {:id => args[:id]}
   end
 
-  def shortener email
-    if email.length < 20
-      email
+  def shortener word
+    if word.length < 20
+      word
     else
-      email.slice(0,19) +'...'
+      word.slice(0,19) +'...'
     end
   end
 end

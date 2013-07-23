@@ -18,15 +18,23 @@ class Contact < ActiveRecord::Base
   validate :name_not_too_long?
 
   before_save do
+    self.emailed = not(self.user.receive_emails)
 		if referenced_user = User.find_by_email(self.email)
 			self.referenced_user = referenced_user
 		end
+    true
 	end
 
   after_save do
     self.notifications.each do |notification|
       notification.save
     end
+  end
+
+  after_create do
+    self.referenced_user.notifications.where(
+      :action => 'deleted_contact',
+      :contact_id => self.id).destroy_all
   end
 
   after_destroy do

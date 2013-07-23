@@ -1,0 +1,39 @@
+¡Saludos #{@user.name}!
+=======================
+      
+Deseamos informarte que tienes las siguientes actualizaciones en Mi Mateo:
+
+- if @pendingContacts
+  - @pendingContacts.each do |contact|
+    #{contact.name} te ha agregado como contacto
+
+- if @pendingTasks
+  - @pendingTasks.each do |task|
+    #{task.user.name} te ha invitado a la tarea #{task.name}
+        
+- if @notifications
+  - @notifications.each do |notification|
+    - case notification.action
+      - when 'updated_task'
+        #{notification.contact_name} ha actualizado la tarea #{notification.task_name}
+      - when 'deleted_task'
+        #{notification.contact_name} ha eliminado la tarea #{notification.task_name}
+      - when 'completed_task'
+        #{notification.contact_name} ha completado la tarea #{notification.task_name}
+      - when 'unread_message'
+        Tienes #{notification.amount} mensaje/s sin leer en la tarea #{notification.task_name}
+      - when 'deleted_contact'
+        #{notification.contact_name} te ha eliminado como contacto
+      - when 'sent_bone'
+        #{notification.contact_name} te ha enviado #{notification.amount} hueso/s por #{notification.task_name}
+      - when 'refused_task'
+        #{notification.contact_name} ha rechazado la tarea #{notification.task_name}
+      - when 'accepted_task'
+        #{notification.contact_name} ha aceptado la tarea #{notification.task_name}
+      - when 'ends_today_task'
+        ¡La tarea #{notification.task_name} termina hoy!
+      - when 'deadline_missed_task'
+        ¡Se ha agotado el plazo de la tarea #{notification.task_name}!
+
+Puedes entrar en Mi Mateo siguiendo este enlace:
+=@url

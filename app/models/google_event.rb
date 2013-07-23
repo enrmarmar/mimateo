@@ -7,6 +7,7 @@ class GoogleEvent < ActiveRecord::Base
       self.google_api_destroy
     end
     self.google_id = google_api_insert.data.id
+    true
   end
 
   before_destroy do  

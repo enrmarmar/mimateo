@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130708180646) do
+ActiveRecord::Schema.define(:version => 20130723020029) do
 
   create_table "bones", :force => true do |t|
     t.integer  "giver_id"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20130708180646) do
     t.datetime "updated_at"
     t.boolean  "updated"
     t.boolean  "pending"
+    t.boolean  "emailed"
   end
 
   create_table "google_events", :force => true do |t|
@@ -70,6 +71,7 @@ ActiveRecord::Schema.define(:version => 20130708180646) do
     t.string   "task_name"
     t.string   "contact_name"
     t.integer  "amount"
+    t.boolean  "emailed"
   end
 
   create_table "tasks", :force => true do |t|
@@ -82,6 +84,7 @@ ActiveRecord::Schema.define(:version => 20130708180646) do
     t.boolean  "updated"
     t.boolean  "unread"
     t.date     "deadline"
+    t.boolean  "emailed"
   end
 
   create_table "users", :force => true do |t|
@@ -96,6 +99,8 @@ ActiveRecord::Schema.define(:version => 20130708180646) do
     t.string   "token"
     t.string   "refresh_token"
     t.datetime "token_expires_at"
+    t.boolean  "receive_emails"
+    t.boolean  "auto_synchronize_with_GoogleCalendar"
   end
 
 end

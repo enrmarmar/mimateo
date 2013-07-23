@@ -7,7 +7,7 @@
           = link_to :controller => :contacts, :action => :accept, :id => contact.id do
             %button#accept-contact.btn.btn-mini(data-toggle="tooltip-accept-contact" title="Agregar contacto")
               %i.icon-thumbs-up
-          = link_to :controller => :contacts, :method => :delete, :id => notification.task.id do
+          = link_to :controller => :contacts, :method => :delete, :id => contact.id do
             %button#refuse-contact.btn.btn-mini(data-toggle="tooltip-accept-task" title="Rechazar contacto")
               %i.icon-thumbs-down
 

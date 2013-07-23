@@ -26,7 +26,7 @@ class ContactsController < ApplicationController
     if @contact.save
       # Create a pending contact for the referenced user unless already a contact
       if User.find_by_email(@contact.email)
-        unless @contact.referenced_user.user_as_contact_for(@current_user)
+        unless @current_user.user_as_contact_for @contact.referenced_user
           @referenced_contact = Contact.create!(
             :user => @contact.referenced_user,
             :name => @current_user.name, 
