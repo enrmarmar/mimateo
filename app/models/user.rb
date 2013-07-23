@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
 	end
 
   def has_google_account?
-    true unless self.uid == nil
+    false unless self.uid
   end
 
 	def owns_task? task
@@ -83,7 +83,8 @@ class User < ActiveRecord::Base
   end
 
   def active_invited_tasks
-    self.invited_tasks.joins(:invites).where('invites.pending = ?', false)
+    #TODO Figure out why do I need uniq! here
+    self.invited_tasks.joins(:invites).where('invites.pending = ?', false).uniq!
   end
 
   def pending_contacts
