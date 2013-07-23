@@ -64,6 +64,7 @@ class TasksController < ApplicationController
   def complete
     @task = Task.find_by_id params[:id]
     access_denied and return unless @current_user.owns_task? @task
+    @task.mark_as_updated
     @task.mark_as_completed
     flash[:notice] = "La tarea #{@task.name} se ha marcado como completada."
     render :nothing => true and return if request.xhr?
@@ -115,7 +116,7 @@ class TasksController < ApplicationController
     end
     @contact = Contact.find_by_id params[:contact]
     @user = @contact.referenced_user
-    if !@user
+    if not(@user)
       flash[:warning] = "No puedes invitarle, ya que #{@contact.name} aún no es usuario/a de Mi Mateo"
     elsif @user == @current_user
       flash[:warning] = "No puedes invitarte a ti mismo/a!"
@@ -151,8 +152,12 @@ class TasksController < ApplicationController
     @task = Task.find_by_id params[:id]
     access_denied and return unless @current_user.is_invited_to_task? @task
     @task.unmark_as_pending_for @current_user
+    @task.updated = true
     @task.save
     @task.notify_accepted_by @current_user
+    @referenced_contact = @current_user.user_as_contact_for @task.user
+    @referenced_contact.updated = true
+    @referenced_contact.save
     flash[:notice] = "Se ha aceptado la tarea #{@task.name}"
     redirect_to task_path(@task)
   end
@@ -161,6 +166,7 @@ class TasksController < ApplicationController
     @task = Task.find_by_id params[:id]
     access_denied and return unless @current_user.is_invited_to_task? @task
     @task.destroy_invitation_for @current_user
+    @task.updated = true
     flash[:notice] = "Se ha rechazado la tarea #{@task.name}"
     render :nothing => true and return if request.xhr?
     redirect_to tasks_path

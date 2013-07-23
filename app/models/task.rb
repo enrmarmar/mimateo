@@ -12,7 +12,7 @@ class Task < ActiveRecord::Base
 
 	before_save do
 		self.emailed = not(self.user.receive_emails) if self.user
-		self.updated = true
+		self.unread = false
 		true
 	end
 
@@ -92,6 +92,7 @@ class Task < ActiveRecord::Base
 	end
 
 	def mark_as_updated
+		self.updated = true
 		self.invites.each do |invite|
 			invite.updated = true
 			invite.save

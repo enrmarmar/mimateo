@@ -79,7 +79,7 @@ class User < ActiveRecord::Base
   end
 
   def pending_invited_tasks
-  	self.invited_tasks.joins(:invites).where('invites.pending = ?', true)
+  	self.invited_tasks.joins(:invites).where('invites.pending = ?', true).uniq!
   end
 
   def active_invited_tasks

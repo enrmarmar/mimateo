@@ -6,6 +6,11 @@ class Invite < ActiveRecord::Base
 		self.pending = true
 	end
 
+  before_save do
+    self.unread = false
+    true
+  end
+
   after_save do
     if self.contact.referenced_user
       GoogleEvent.where(
