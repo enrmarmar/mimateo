@@ -1,4 +1,7 @@
 #content_title.well
-  #{@contact.name}
+	#{@contact.name}
 = form_tag contact_path(@contact), :method => :put do
-  = render :partial => 'contact_form'
+	= render :partial => 'edit_contact_form'
+
+%p
+	La dirección de correo no se puede modificar una vez creado el contacto. Si es preciso puede eliminar el contacto y crearlo otra vez con la nueva dirección.

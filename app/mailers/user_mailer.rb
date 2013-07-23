@@ -6,4 +6,11 @@ class UserMailer < ActionMailer::Base
     @url  = 'http://cryptic-fjord-9664.herokuapp.com/index'
     mail(to: @user.email, subject: 'Bienvenido/a a Mi Mateo, el organizador social de tareas')
   end
+
+  def invite_email (contact, inviter_user)
+  	@contact = contact
+  	@inviter_user = inviter_user
+    @url  = 'http://cryptic-fjord-9664.herokuapp.com/index'
+    mail(to: @contact.email, subject: 'Te han invitado a utilizar Mi Mateo, el organizador social de tareas')
+  end
 end

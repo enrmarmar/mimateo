@@ -1,4 +1,7 @@
 #content_title.well
-  Nuevo contacto
+	Nuevo contacto
 = form_tag contacts_path, :method => :post do
-  = render :partial => 'contact_form'
+	= render :partial => 'contact_form'
+
+%p
+	Si la dirección de correo no corresponde a ningún usuario de Mi Mateo, se enviará un mensaje de invitación en su nombre.

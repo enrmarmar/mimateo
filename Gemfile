@@ -36,6 +36,7 @@ end
 group :development, :test do
   gem 'sqlite3'
   gem 'ruby-debug19' # remove when upgrading to Ruby 2.0d
+  gem 'pry'
 end
 
 group :production do

@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 class ContactsController < ApplicationController
 
   def show
@@ -31,8 +33,12 @@ class ContactsController < ApplicationController
             :email => @current_user.email, 
             :pending => true)
         end
+        flash[:notice] = "Se ha creado el contacto #{@contact.name}."
+      else
+        UserMailer.invite_email(@contact, @current_user).deliver
+        @contact.destroy
+        flash[:notice] = "Se ha enviado un email de invitación a #{@contact.email}."
       end
-  	  flash[:notice] = "Se ha creado el contacto #{@contact.name}."
   	  redirect_to tasks_path
   	else
   	  render 'new'

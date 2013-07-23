@@ -68,7 +68,6 @@ class Contact < ActiveRecord::Base
   # Custom validators
   private
 
-
   def unique_name?
     other_contact = self.user.contacts.find_by_name(self.name)
     if other_contact && (other_contact != self)
