@@ -26,6 +26,9 @@ class User < ActiveRecord::Base
     if self.has_google_account?
       self.receive_emails = true
       self.auto_synchronize_with_GoogleCalendar = true
+    else
+      self.receive_emails = false
+      self.auto_synchronize_with_GoogleCalendar = false
     end
     true
   end

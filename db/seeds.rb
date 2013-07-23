@@ -27,6 +27,7 @@ r_i = Contact.create(name: ramon.name, email: ramon.email, referenced_user_id: r
 i_a = Contact.create(name: isabel.name, email: isabel.email, referenced_user_id: isabel.id, user_id: ana.id)
 i_p = Contact.create(name: isabel.name, email: isabel.email, referenced_user_id: isabel.id, user_id: pedro.id)
 i_r = Contact.create(name: isabel.name, email: isabel.email, referenced_user_id: isabel.id, user_id: ramon.id)
+Contact.update_all :pending => false
 
 #Test tasks
 t1 = Task.create(name: 'Comprar detergente', user_id: ana.id)
@@ -45,6 +46,7 @@ Invite.create(task_id: t4.id, contact_id: a_p.id)
 Invite.create(task_id: t4.id, contact_id: r_p.id)
 Invite.create(task_id: t4.id, contact_id: i_p.id)
 Invite.create(task_id: t6.id, contact_id: p_r.id)
+Invite.update_all :pending => false
 
 #Test messages
 Message.create(task_id: t1.id, user_id: ana.id, text: 'A ver si alguien me ayuda a comprar detergente')

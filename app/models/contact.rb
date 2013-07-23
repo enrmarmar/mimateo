@@ -31,6 +31,10 @@ class Contact < ActiveRecord::Base
     end
   end
 
+  before_create do
+    self.pending = true
+  end
+
   after_create do
     self.referenced_user.notifications.where(
       :action => 'deleted_contact',

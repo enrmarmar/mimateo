@@ -2,7 +2,7 @@ class Invite < ActiveRecord::Base
 	belongs_to :contact
 	belongs_to :task
 
-	after_create do
+	before_create do
 		self.pending = true
 	end
 
