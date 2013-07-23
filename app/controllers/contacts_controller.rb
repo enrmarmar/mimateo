@@ -15,8 +15,8 @@ class ContactsController < ApplicationController
       @number_of_bones_given_to_contact = @bones_given_to_contact.sum(:amount)
       @bones_taken_from_contact = @current_user.taken_bones.where(:giver_id => @user.id)
       @number_of_bones_taken_from_contact = @bones_taken_from_contact.sum(:amount)
+      @pendingTasks = @current_user.pending_invited_tasks.where(user_id: @contact.referenced_user.id)
     end
-    @pendingTasks = @current_user.pending_invited_tasks.where(user_id: @contact.referenced_user.id)
   end
 
   def create
