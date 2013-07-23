@@ -12,7 +12,6 @@ class Task < ActiveRecord::Base
 
 	before_save do
 		self.emailed = not(self.user.receive_emails) if self.user
-		self.unread = false
 		true
 	end
 
@@ -83,12 +82,23 @@ class Task < ActiveRecord::Base
 			self.save
 		elsif user.is_invited_to_task? self
 			contact = user.user_as_contact_for self.user
+			contact.updated = false
 			invite = self.invites.find_by_contact_id contact.id
 			invite.updated = false
 			invite.unread = false
 			invite.save
 		end
-		user.notifications.where(:task_id => self.id, :action => 'unread_message').destroy_all
+		user.notifications.where(
+			:task_id => self.id, 
+			:action => 'unread_message').destroy_all
+	end
+
+	def unmark_as_updated
+		self.updated = false
+		self.invites.each do |invite|
+			invite.updated = false
+			invite.save
+		end
 	end
 
 	def mark_as_updated
@@ -96,6 +106,9 @@ class Task < ActiveRecord::Base
 		self.invites.each do |invite|
 			invite.updated = true
 			invite.save
+			contact = self.user.user_as_contact_for invite.user
+			contact.updated = true
+			contact.save
 		end
 	end
 

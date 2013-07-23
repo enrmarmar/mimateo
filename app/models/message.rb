@@ -2,6 +2,10 @@ class Message < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :task
 
+  after_save do
+    self.task.unread = true
+  end
+
   def notify_unread
     notify_unread_for self.task.user
     self.task.contacts.each do |contact|

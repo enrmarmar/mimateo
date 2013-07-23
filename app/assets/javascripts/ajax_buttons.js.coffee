@@ -1,6 +1,8 @@
 $(document).ready ->
   $(".notification .close").click ->
     request = $.get "/notifications/" + $(this).attr('id') + "/destroy"
+    request.done ->
+      document.location.reload(true) if request.getResponseHeader("Reload") == "true"
   $("#complete-task").click ->
     request = $.get "/task/" + $(".task_id").attr('id') + "/complete"
     request.done ->

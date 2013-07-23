@@ -39,7 +39,8 @@ class ApplicationController < ActionController::Base
     # TODO: Fix utf-8 encoding in AJAX
     response.headers['Content-Type'] = "text/html; charset=utf-8"
     response.headers['X-Message'] = flash_message
-    response.headers["X-Message-Type"] = flash_type.to_s
+    response.headers['X-Message-Type'] = flash_type.to_s
+    response.headers['Reload'] = "true" if flash[:reload]
     flash.discard
   end
 
