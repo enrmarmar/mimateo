@@ -36,6 +36,9 @@
             - when 'deleted_task'
               =link_to notification.contact_name, contact_path(notification.contact) 
               ha eliminado la tarea #{notification.task_name} 
+            - when 'uninvited_task'
+              =link_to notification.contact_name, contact_path(notification.contact) 
+              te ha expulsado de la tarea #{notification.task_name} 
             - when 'completed_task'
               =link_to notification.contact_name,contact_path(notification.contact)
               ha completado la tarea

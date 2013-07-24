@@ -143,6 +143,12 @@ class TasksController < ApplicationController
     @contact = Contact.find_by_id params[:contact]
     access_denied and return unless @current_user.owns_task? @task
     @task.invites.find_by_contact_id(@contact.id).destroy
+    @contact.referenced_user.notify_uninvited_from @task
+    @user = @contact.referenced_user
+    if @referenced_contact = @user.contacts.find_by_referenced_user_id(@current_user.id)
+      @referenced_contact.updated = true
+      @referenced_contact.save
+    end
     flash[:notice] = "#{@contact.name} expulsado/a de #{@task.name}"
     render :nothing => true and return if request.xhr?
     redirect_to :back
@@ -155,6 +161,7 @@ class TasksController < ApplicationController
     @task.updated = true
     @task.save
     @task.notify_accepted_by @current_user
+    @current_user.notifications.where(action: 'uninvited_task', task: @task).destroy_all
     @referenced_contact = @current_user.user_as_contact_for @task.user
     @referenced_contact.updated = true
     @referenced_contact.save

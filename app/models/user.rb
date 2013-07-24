@@ -85,7 +85,8 @@ class User < ActiveRecord::Base
 
   def pending_invited_tasks_from user
     referenced_contact = self.user_as_contact_for user
-    self.invited_tasks.joins(:invites).where('invites.pending = ? AND invites.contact_id = ?', true, referenced_contact).uniq
+    self.invited_tasks.joins(:invites).where(
+      'invites.pending = ? AND invites.contact_id = ?', true, referenced_contact).uniq
   end
 
   def active_invited_tasks
@@ -130,6 +131,14 @@ class User < ActiveRecord::Base
         :action => notification.action,
         :task_id => notification.task.id).first
     end  
+  end
+
+  def notify_uninvited_from task
+    notification = Notification.create!(
+      :action => 'uninvited_task',
+      :user => self,
+      :contact => task.user.user_as_contact_for(self),
+      :task => task)
   end
 
   def unmailed_pending_contacts
