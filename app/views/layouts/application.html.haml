@@ -5,7 +5,8 @@
 	%body.container-fluid
 		.row-fluid#top_navbar.well
 			= render :partial => 'layouts/navbar'
-		%img(src='/assets/logo.png')
+		%a(href='/tasks/')
+			%img.logo(src='/assets/logo.png' id='#{Time.now.localtime}')
 		#flash_hook
 			- if flash[:notice]
 				.alert

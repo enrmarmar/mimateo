@@ -2,7 +2,6 @@ class UsersController < ApplicationController
 	require 'google/api_client'
   	require 'client_builder'
 
-
 	skip_before_filter :set_current_user
 
 	def index
@@ -68,4 +67,5 @@ class UsersController < ApplicationController
 		flash[:notice] = 'Desconectado'
 		redirect_to tasks_path
 	end
+
 end

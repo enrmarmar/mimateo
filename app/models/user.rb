@@ -163,4 +163,18 @@ class User < ActiveRecord::Base
     end
   end
 
+  def updates_since? last_rendered_at
+    #TODO : Trim it down for performance?
+    self.tasks.each do |task|
+      return true if task.updated_at > last_rendered_at
+    end
+    self.contacts.each do |contact|
+      return true if contact.updated_at > last_rendered_at
+    end
+    self.notifications.each do |notification|
+      return true if notification.updated_at > last_rendered_at
+    end
+    return false
+  end
+
 end

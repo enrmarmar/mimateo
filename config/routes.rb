@@ -24,6 +24,8 @@ MiMateo::Application.routes.draw do
   match 'auth/failure' => 'users#failure'
   match 'logout' => 'users#destroy'
 
+  match 'check_for_updates/:last_rendered_at' => 'tasks#check_for_updates'
+
   namespace :api do
     namespace :v1 do
       match 'tasks' => 'tasks#tasks'

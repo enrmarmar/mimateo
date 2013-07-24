@@ -174,5 +174,11 @@ class TasksController < ApplicationController
     render :nothing => true and return if request.xhr?
     redirect_to tasks_path
   end
+
+  def check_for_updates
+    last_rendered_at = params[:last_rendered_at]
+    flash[:reload] = true if @current_user.updates_since? last_rendered_at
+    render :nothing => true
+  end
     
 end
